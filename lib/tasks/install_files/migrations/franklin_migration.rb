@@ -80,7 +80,20 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.float    			:custom_conversion_factor
 		end
 
-		
+		create_table :franklin_user_inputs do |t|
+			t.integer  			:user_id
+			t.integer  			:result_obj_id
+			t.string   			:result_obj_type
+			t.text     			:content
+			t.datetime 			:created_at
+			t.datetime 			:updated_at
+			t.string   			:source
+			t.string   			:action,          default: :created
+			t.string   			:result_status,   default: :success
+			t.text     			:system_notes
+		end
+
+
 
 	end
 end
