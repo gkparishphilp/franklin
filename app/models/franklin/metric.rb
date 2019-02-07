@@ -9,8 +9,8 @@ module Franklin
 
 		enum availability: { 'just_me' => 0, 'trainer' => 10, 'team' => 30, 'community' => 50, 'anyone' => 100 }
 
-		belongs_to :unit
-		belongs_to :user
+		belongs_to :unit, optional: true
+		belongs_to :user, optional: true
 
 		has_many 	:observations, as: :observed, dependent: :destroy
 		has_many 	:targets, as: :parent_obj, dependent: :destroy
@@ -122,7 +122,7 @@ module Franklin
 		private
 			def set_defaults
 				self.aliases << self.title.parameterize unless self.aliases.include?( self.title.parameterize )
-				self.unit ||= Unit.nada.first
+				#self.unit ||= Unit.nada.first
 			end
 
 			def clean_aliases

@@ -38,7 +38,7 @@ module Franklin
 				'count' 			=> 'Observation Frequency',
 				'current_value' 	=> 'Current Value',
 				'max_value' 		=> 'All-Time High',
-				'min_Value'			=> 'All-Time Low',
+				'min_value'			=> 'All-Time Low',
 				'sum_value' 		=> 'Accumulated Value'
 				#started_at		=> 'Start Time',
 				# recorded_at	=> 'End Time'

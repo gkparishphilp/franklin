@@ -1,0 +1,54 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Observation Admin
+						= "(#{pluralize @observations.total_count, 'Observation'})"
+
+		.col-xs-2
+			%a.btn.btn-success{ href: '#TODO?' }
+				%i.fa.fa-plus-square
+				New
+
+	.row
+		.col-xs-6
+			= raw paginate @observations
+		.col-xs-6
+			= form_tag observation_admin_index_path, method: :get, class: 'pull-right form-inline' do
+				= text_field_tag :q, params[:q], class: 'form-control'
+				= submit_tag 'Search', class: 'btn btn-primary'
+				= link_to 'Clear', observation_admin_index_path, class: 'btn btn-default btn-xs'
+
+	.row
+		%table.table.table-striped
+			%thead
+				%th
+					Title
+
+				%th
+					User
+
+				%th
+					Base Unit
+
+
+
+
+			%tbody
+				- @observations.each do |observation|
+					%tr
+						%td
+							= observation.to_s
+						%td
+							- if observation.user_id.present?
+								%a{ href: swell_media.edit_user_admin_path( User.find( observation.user_id ) ) }
+									= User.find( observation.user_id )
+							- else
+								System
+						%td
+							= observation.unit

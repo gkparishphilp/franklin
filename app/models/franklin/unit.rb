@@ -1,13 +1,13 @@
 module Franklin
 	class Unit < ApplicationRecord
 		before_create	:set_aliases
-		enum unit_type: { 'custom' => 0, 'volume' => 10, 'weight' => 20, 'length' => 30, 'time' => 40, 'percent' => 50, 'pressure' => 60, 'energy' => 70, 'temperature' => 80, 'rate' => 90, 'concentration' => 100, 'score' => 110 }
+		enum unit_type: { 'custom' => 0, 'volume' => 10, 'weight' => 20, 'distance' => 30, 'time' => 40, 'percent' => 50, 'pressure' => 60, 'energy' => 70, 'temperature' => 80, 'rate' => 90, 'concentration' => 100, 'score' => 110 }
 		
-		belongs_to :base_unit, class_name: 'Unit'
+		belongs_to :base_unit, class_name: 'Unit', optional: true
 
 		# the imperial correlate maps metric units to their imperial counter-parts.
 		# e.g. kg correlates to lb (not oz), cm correlates to in, etc....
-		belongs_to :imperial_correlate, class_name: 'Unit'
+		belongs_to :imperial_correlate, class_name: 'Unit', optional: true
 
 		include FriendlyId
 		friendly_id :name, use: :slugged

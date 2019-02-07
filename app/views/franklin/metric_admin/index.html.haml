@@ -1,0 +1,61 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Metric Admin
+						= "(#{pluralize @metrics.total_count, 'Metric'})"
+
+		.col-xs-2
+			%a.btn.btn-success{ data: { toggle: :modal, target: '#new_metric' } }
+				%i.fa.fa-plus-square
+				New
+
+	.row
+		.col-xs-6
+			= raw paginate @metrics
+		.col-xs-6
+			= form_tag metric_admin_index_path, method: :get, class: 'pull-right form-inline' do
+				= text_field_tag :q, params[:q], class: 'form-control'
+				= submit_tag 'Search', class: 'btn btn-primary'
+				= link_to 'Clear', metric_admin_index_path, class: 'btn btn-default btn-xs'
+
+	.row
+		%table.table.table-striped
+			%thead
+				%th
+					Title
+
+				%th
+					User
+
+				%th
+					Base Unit
+
+				%th
+					Aliases
+
+
+			%tbody
+				- @metrics.each do |metric|
+					%tr
+						%td
+							= link_to metric.title, edit_metric_admin_path( metric )
+						%td
+							- if metric.user_id.present?
+								%a{ href: swell_media.edit_user_admin_path( User.find( metric.user_id ) ) }
+									= User.find( metric.user_id )
+							- else
+								System
+						%td
+							= metric.unit
+						%td
+							= metric.aliases_csv
+
+
+
+= render 'new_modal'

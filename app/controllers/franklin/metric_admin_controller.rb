@@ -35,13 +35,13 @@ module Franklin
 		def update
 			@metric.update( metric_params )
 
-			redirect_to :back
+			redirect_back fallback_location: edit_metric_admin_path( @metric )
 		end
 
 
 		private
 			def metric_params
-				params.require( :metric ).permit( :title, :description, :unit, :display_unit, :aliases_csv, :metric_type )
+				params.require( :metric ).permit( :title, :description, :default_value_type, :default_period, :unit_id, :aliases_csv, :metric_type )
 			end
 
 			def set_metric

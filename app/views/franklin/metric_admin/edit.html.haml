@@ -1,0 +1,55 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Metric Admin', metric_admin_index_path
+				%li
+					%strong
+						Edit
+						= @metric.title
+		.col-xs-2
+	
+	= form_for @metric, url: metric_admin_path( @metric ) do |f|
+		.row
+			.col-xs-8
+				.form-group
+					= f.text_field :title, class: 'form-control'
+
+				.form-group
+					= f.text_area :description, class: 'form-control wysiwyg', rows: 12
+
+
+			.col-xs-4
+				.well
+
+					-#.form-group
+						= f.label :unit
+						= f.text_field :unit, class: 'form-control'
+
+					.form-group
+						= f.label :unit_id, 'Default Unit'
+						= f.select :unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, {}, class: 'form-control'
+					
+					.form-group
+						= f.label :default_value_type
+						= f.select :default_value_type, Franklin::Target.target_types.collect{ |k,v| [ v, k ] }, {}, class: 'form-control'
+
+					.form-group
+						= f.label :default_period
+						= f.select :default_period, Franklin::Target.periods.collect{ |k,v| [ v, k ] }, {}, class: 'form-control'
+
+					.form-group
+						= f.label :aliases_csv, 'Aliases'
+						= f.text_field :aliases_csv, class: 'form-control'
+
+					-#.form-group
+						= f.label :movement_id, 'Movement'
+						= f.collection_select :movement_id, Movement.order( :title ), :id, :title, class: 'form-control', prompt: '-- None --'
+
+					.form-group
+						= f.submit 'Update', class: 'btn btn-primary'
+						.pull-right= link_to 'Cancel', :back, class: 'btn btn-default btn-sm'

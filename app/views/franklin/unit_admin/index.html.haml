@@ -1,0 +1,65 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					%strong
+						Unit Admin
+						= "(#{pluralize @units.total_count, 'Unit'})"
+
+		.col-xs-2
+			%a.btn.btn-success{ data: { toggle: :modal, target: '#new_unit' } }
+				%i.fa.fa-plus-square
+				New
+
+	.row
+		.col-xs-6
+			= raw paginate @units
+		.col-xs-6
+			= form_tag unit_admin_index_path, method: :get, class: 'pull-right form-inline' do
+				= text_field_tag :q, params[:q], class: 'form-control'
+				= submit_tag 'Search', class: 'btn btn-primary'
+				= link_to 'Clear', unit_admin_index_path, class: 'btn btn-default btn-xs'
+
+	.row
+		%table.table.table-striped
+			%thead
+				%th
+					Title
+
+				%th
+					Unit Type
+				%th
+					User
+
+				%th
+					Abbrev
+
+				%th
+					Aliases
+
+
+			%tbody
+				- @units.each do |unit|
+					%tr
+						%td
+							= link_to unit.name, edit_unit_admin_path( unit )
+						%td
+							= unit.unit_type
+						%td
+							- if unit.user_id.present?
+								%a{ href: swell_media.edit_user_admin_path( User.find( unit.user_id ) ) }
+									= User.find( unit.user_id )
+							- else
+								System
+						%td
+							= unit.abbrev
+						%td
+							= unit.aliases_csv
+
+
+
+= render 'new_modal'

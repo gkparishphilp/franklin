@@ -5,3 +5,13 @@ test/dummy/db/*.sqlite3
 test/dummy/db/*.sqlite3-journal
 test/dummy/log/*.log
 test/dummy/tmp/
+
+
+**/.DS_Store
+.DS_Store
+
+.env*
+
+.idea
+*.dump
+map.json

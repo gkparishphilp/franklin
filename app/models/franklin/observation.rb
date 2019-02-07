@@ -4,8 +4,8 @@ module Franklin
 		before_create 	:set_defaults
 		validate 		:gotta_have_value_or_notes
 
-		belongs_to 	:observed, polymorphic: true, touch: true
-		belongs_to 	:parent, class_name: 'Observation'
+		belongs_to 	:observed, polymorphic: true, touch: true, optional: true
+		belongs_to 	:parent, class_name: 'Observation', optional: true
 		has_many 	:subs, foreign_key: :parent_id, class_name: 'Observation'
 		belongs_to 	:user
 		belongs_to 	:unit

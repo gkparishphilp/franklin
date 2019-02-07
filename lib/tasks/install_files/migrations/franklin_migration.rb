@@ -4,25 +4,22 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 
 		create_table :franklin_metrics do |t|
 			t.string			:title
-			t.integer  			:movement_id
-			t.string   			:title
+			t.integer  			:category_id
+			t.integer  			:unit_id
+			t.integer  			:user_id
 			t.string   			:slug
 			t.text     			:aliases,            default: [],         array: true
-			t.integer  			:user_id
-			t.string   			:default_value_type
 			t.text     			:description
 			t.integer  			:availability,       default: 0
-			t.integer  			:unit_id
 			t.string   			:default_period,     default: :all_time
-			t.datetime 			:created_at
-			t.datetime 			:updated_at
-			t.integer  			:category_id
+			t.string   			:default_value_type
 			
 			t.timestamps
 		end
 
 		create_table :franklin_observations do |t|
 			t.string   			:tmp_id
+			t.integer  			:unit_id
 			t.integer  			:user_id
 			t.integer  			:parent_id
 			t.integer  			:lft
@@ -37,11 +34,10 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.datetime 			:started_at
 			t.datetime 			:ended_at
 			t.datetime 			:recorded_at
-			t.hstore   			:properties,    default: {}
-			t.datetime 			:created_at
-			t.datetime 			:updated_at
-			t.integer  			:unit_id
 			t.integer  			:status,        default: 1
+			t.hstore   			:properties,    default: {}
+			
+			t.timestamps
 		end
 
 		create_table :franklin_targets do |t|
@@ -58,8 +54,8 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.datetime 			:start_at
 			t.datetime 			:end_at
 			t.integer  			:status,          default: 1
-			t.datetime 			:created_at
-			t.datetime 			:updated_at
+			
+			t.timestamps
     	end
 
     	create_table :franklin_units, force: :cascade do |t|
@@ -68,16 +64,16 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.integer  			:user_id
 			t.integer  			:metric_id
 			t.float    			:conversion_factor,        default: 1.0
+			t.integer  			:custom_base_unit_id
+			t.float    			:custom_conversion_factor
 			t.string   			:name
 			t.string   			:slug
 			t.string   			:abbrev
 			t.integer  			:unit_type,                default: 0
 			t.text     			:aliases,                  default: [],   array: true
 			t.boolean  			:imperial,                 default: true
-			t.datetime 			:created_at
-			t.datetime 			:updated_at
-			t.integer  			:custom_base_unit_id
-			t.float    			:custom_conversion_factor
+
+			t.timestamps
 		end
 
 		create_table :franklin_user_inputs do |t|
@@ -85,12 +81,12 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.integer  			:result_obj_id
 			t.string   			:result_obj_type
 			t.text     			:content
-			t.datetime 			:created_at
-			t.datetime 			:updated_at
 			t.string   			:source
 			t.string   			:action,          default: :created
 			t.string   			:result_status,   default: :success
 			t.text     			:system_notes
+
+			t.timestamps
 		end
 
 
