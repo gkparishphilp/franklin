@@ -42,8 +42,7 @@
 						
 						%td
 							- if input.user_id.present?
-								%a{ href: swell_media.edit_user_admin_path( User.find( input.user_id ) ) }
-									= User.find( input.user_id )
+								= input.user
 							- else
 								System
 						%td
@@ -55,7 +54,6 @@
 							from
 							= input.source
 							.response{ style: 'margin-left:2em;margin-top:1em;' }
-								= image_tag 'life-meter-logo.png', width: 24
 								I:
 								= input.system_notes
 						%td

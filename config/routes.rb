@@ -5,4 +5,7 @@ Franklin::Engine.routes.draw do
 	resources 	:unit_admin
 	resources 	:user_input_admin
 
+	resources 	:observations
+	resources 	:user_inputs
+
 end
