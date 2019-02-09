@@ -1,6 +1,7 @@
 
 # required gems from gemspec
 require 'acts-as-taggable-array-on'
+require 'chronic_duration'
 
 
 module Franklin

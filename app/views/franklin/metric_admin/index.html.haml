@@ -47,8 +47,7 @@
 							= link_to metric.title, edit_metric_admin_path( metric )
 						%td
 							- if metric.user_id.present?
-								%a{ href: swell_media.edit_user_admin_path( User.find( metric.user_id ) ) }
-									= User.find( metric.user_id )
+								= User.find( metric.user_id )
 							- else
 								System
 						%td

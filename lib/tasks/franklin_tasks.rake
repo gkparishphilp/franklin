@@ -93,7 +93,7 @@ namespace :franklin do
 		inch = Franklin::Unit.create name: 'Inch', abbrev: 'in', unit_type: 'distance', aliases: ['"'], base_unit: m, conversion_factor: 0.0254
 		ft = Franklin::Unit.create name: 'Foot', abbrev: 'ft', unit_type: 'distance', aliases: ["'"], base_unit: m, conversion_factor: 0.3048
 		yd = Franklin::Unit.create name: 'Yard', abbrev: 'yd', unit_type: 'distance', base_unit: m, conversion_factor: 0.9144
-		mi = Franklin::Unit.create name: 'Mile', abbrev: 'mi', unit_type: 'distance', base_unit: m, conversion_factor: 1609.34
+		mi = Franklin::Unit.create name: 'Mile', abbrev: 'mi', unit_type: 'distance', base_unit: m, conversion_factor: 1609.344
 		m.update( imperial_correlate_id: yd.id )
 		cm.update( imperial_correlate_id: inch.id )
 		mm.update( imperial_correlate_id: inch.id )

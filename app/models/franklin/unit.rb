@@ -14,17 +14,18 @@ module Franklin
 
 		attr_accessor :custom_base_unit_name
 
+		def self.base
+			where( base_unit_id: nil )
+		end
 
 		def self.find_by_alias( term )
 			term = term.parameterize if term.present? && term.length > 1
 			where( ":term = ANY( aliases )", term: term ).first
 		end
 
-
-
-
-
-
+		def self.system
+			where( user_id: nil )
+		end
 
 
 
@@ -36,61 +37,70 @@ module Franklin
 			self.aliases = aliases_csv.split( /,\s*/ )
 		end
 
-		def convert_to_base( val, opts={} )
-			if self.time?
-				if not( val.strip.match( /\D+/ ) )
-					val = "#{val} #{self.name}"
-				end
-				return ChronicDuration.parse( val )
-			elsif self.percent?
-				return val.to_f / 100
-			elsif self.temperature? && self.base_unit.present?
-				return (val.to_f - 32.0) * self.conversion_factor
-			elsif self.base_unit.present?
-				return val.to_f * self.conversion_factor
-			else
-				return val.to_f
-			end
+		def is_base?
+			self.base_unit_id.nil?
+		end
+
+		def is_sytem?
+			self.user_id.nil?
 		end
 
 
-		def convert_from_base( val, opts={} )
-			# by default, return a formatted string
-			# show_units: false should just return a float
-			opts[:show_units] = true unless opts[:show_units] == false
-			opts[:precision] ||= 2
+		# def convert_to_base( val, opts={} )
+		# 	if self.time?
+		# 		if not( val.strip.match( /\D+/ ) )
+		# 			val = "#{val} #{self.name}"
+		# 		end
+		# 		return ChronicDuration.parse( val )
+		# 	elsif self.percent?
+		# 		return val.to_f / 100
+		# 	elsif self.temperature? && self.base_unit.present?
+		# 		return (val.to_f - 32.0) * self.conversion_factor
+		# 	elsif self.base_unit.present?
+		# 		return val.to_f * self.conversion_factor
+		# 	else
+		# 		return val.to_f
+		# 	end
+		# end
 
-			val = val.to_f
 
-			if self.time?
-				if opts[:show_units]
-					return ChronicDuration.output( val, format: :long )
-				else
-					return ChronicDuration.output( val, format: :chrono )
-				end
-			elsif self.percent?
-				if opts[:show_units]
-					return "#{( val * 100.to_f ).round( opts[:precision] )}%"
-				else
-					return "#{( val * 100.to_f ).round( opts[:precision] )}"
-				end
-			else
-				if self.temperature? && self.base_unit.present?
-					value = ( val.to_f / self.conversion_factor ).round( opts[:precision] ) + 32.0
-				elsif self.base_unit.present?
-					value = ( val / self.conversion_factor.to_f ).round( opts[:precision] )
-				else
-					value = val
-				end
+		# def convert_from_base( val, opts={} )
+		# 	# by default, return a formatted string
+		# 	# show_units: false should just return a float
+		# 	opts[:show_units] = true unless opts[:show_units] == false
+		# 	opts[:precision] ||= 2
+
+		# 	val = val.to_f
+
+		# 	if self.time?
+		# 		if opts[:show_units]
+		# 			return ChronicDuration.output( val, format: :long )
+		# 		else
+		# 			return ChronicDuration.output( val, format: :chrono )
+		# 		end
+		# 	elsif self.percent?
+		# 		if opts[:show_units]
+		# 			return "#{( val * 100.to_f ).round( opts[:precision] )}%"
+		# 		else
+		# 			return "#{( val * 100.to_f ).round( opts[:precision] )}"
+		# 		end
+		# 	else
+		# 		if self.temperature? && self.base_unit.present?
+		# 			value = ( val.to_f / self.conversion_factor ).round( opts[:precision] ) + 32.0
+		# 		elsif self.base_unit.present?
+		# 			value = ( val / self.conversion_factor.to_f ).round( opts[:precision] )
+		# 		else
+		# 			value = val
+		# 		end
 				
-				if opts[:show_units]
-					return "#{value} #{self.abbrev}"
-				else
-					return value
-				end
-			end
+		# 		if opts[:show_units]
+		# 			return "#{value} #{self.abbrev}"
+		# 		else
+		# 			return value
+		# 		end
+		# 	end
 
-		end
+		# end
 
 
 		def to_s

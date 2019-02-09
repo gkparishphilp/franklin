@@ -8,7 +8,9 @@ module Franklin
 		belongs_to 	:parent, class_name: 'Observation', optional: true
 		has_many 	:subs, foreign_key: :parent_id, class_name: 'Observation'
 		belongs_to 	:user
-		belongs_to 	:unit
+		belongs_to 	:unit, optional: true # ?
+
+		attr_accessor :metric_alias, :metric_id, :unit_alias
 
 
 		def self.dated_between( start_date=1.month.ago, end_date=Time.zone.now )
@@ -65,7 +67,7 @@ module Franklin
 		end
 
 		def sub
-			self.user.observations.where( parent_id: self.id ).first
+			Observation.where( user_id: self.user_id, parent_id: self.id ).first
 		end
 
 		def to_s( user=nil )

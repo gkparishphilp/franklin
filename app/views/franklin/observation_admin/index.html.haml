@@ -34,7 +34,16 @@
 					User
 
 				%th
-					Base Unit
+					Stored Value
+
+				%th
+					Converted Value
+
+				%th
+					Unit
+
+				%th
+					Stored Unit
 
 
 
@@ -46,9 +55,14 @@
 							= observation.to_s
 						%td
 							- if observation.user_id.present?
-								%a{ href: swell_media.edit_user_admin_path( User.find( observation.user_id ) ) }
-									= User.find( observation.user_id )
+								= User.find( observation.user_id )
 							- else
 								System
 						%td
+							= observation.value
+						%td
+							= observation.unit.convert_from_base( observation.value )
+						%td
 							= observation.unit
+						%td
+							= observation.unit.base_unit
