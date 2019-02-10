@@ -12,27 +12,130 @@
 						Edit
 						= @metric.title
 		.col-xs-2
+			%a.btn.btn-danger{ href: metric_admin_path( @metric ), data: { method: 'delete', confirm: 'Are you sure? ALL related observations will also be deleted.' } }
+				Delete
 	
 	= form_for @metric, url: metric_admin_path( @metric ) do |f|
 		.row
 			.col-xs-8
 				.form-group
+					= f.label :title
 					= f.text_field :title, class: 'form-control'
 
 				.form-group
+					= f.label :aliases_csv, 'Aliases'
+					= f.text_field :aliases_csv, class: 'form-control'
+						
+				.form-group
 					= f.text_area :description, class: 'form-control wysiwyg', rows: 12
+
+
+
+				%h3
+					Summary
+				- if @metric.observations.present?
+					%table.table
+						%tbody
+							%tr
+								%td
+									%b Top Level Count
+								%td
+									= pluralize @metric.observations.nonsubs.count, 'Observation'
+							%tr
+								%td
+									%b Total Count
+								%td
+									= pluralize @metric.observations.count, 'Observation'
+
+							%tr
+								%td
+									%b First
+								%td
+
+									= @metric.observations.nonsubs.order( recorded_at: :asc ).first.try( :display_value )
+									%br
+									- if @metric.observations.nonsubs.order( recorded_at: :asc ).first.present?
+										= @metric.observations.nonsubs.order( recorded_at: :asc ).first.recorded_at.to_s( :short )
+							%tr
+								%td
+									%b Last
+								%td
+
+									= @metric.observations.nonsubs.order( recorded_at: :desc ).first.try( :display_value )
+									%br
+									- if @metric.observations.nonsubs.order( recorded_at: :desc ).first.present?
+										= @metric.observations.nonsubs.order( recorded_at: :desc ).first.recorded_at.to_s( :short )
+							%tr
+								%td
+									%b Max
+								%td
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.maximum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+
+									=# Franklin::ConversionService.new( val: @metric.observations.nonsubs.where( unit_id: @metric.unit_id ).maximum( :value ), from: @metric.unit.base_unit, to: @metric.unit ).convert
+									
+							%tr
+								%td
+									%b Min
+								%td
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.minimum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+							
+							%tr
+								%td
+									%b Total
+								%td
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.sum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+							%tr
+								%td
+									%b Avg
+								%td
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.average( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+
+
+					%h5
+						Recent Observations of this metric
+					%table.table
+						%thead
+							%th
+							%th
+							%th
+						%tbody
+							- @metric.observations.nonsubs.order( recorded_at: :desc ).limit( 50 ).each do |obs|
+								%tr
+									%td
+										= link_to obs.display_value( show_units: true ), edit_observation_admin_path( obs )
+									%td
+										= obs.recorded_at.to_s( :long )
+									%td
+										= obs.notes
+				- else
+					%h5
+						No observations yet
+
+
+				- if @metric.targets.present?
+					%h3 Targets
+					- @metric.targets.each do |target|
+						%li= link_to target.to_s, edit_target_admin_path( target )
+				- else
+					%h5
+						No targets set
+
+
+
+
+
 
 
 			.col-xs-4
 				.well
 
-					-#.form-group
-						= f.label :unit
-						= f.text_field :unit, class: 'form-control'
+					.form-group
+						= f.label 'User:'
+						= @metric.user || 'System'
 
 					.form-group
 						= f.label :unit_id, 'Default Unit'
-						= f.select :unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, {}, class: 'form-control'
+						= f.select :unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, { include_blank: '-- None --' }, class: 'form-control'
 					
 					.form-group
 						= f.label :default_value_type
@@ -43,12 +146,8 @@
 						= f.select :default_period, Franklin::Target.periods.collect{ |k,v| [ v, k ] }, {}, class: 'form-control'
 
 					.form-group
-						= f.label :aliases_csv, 'Aliases'
-						= f.text_field :aliases_csv, class: 'form-control'
-
-					-#.form-group
-						= f.label :movement_id, 'Movement'
-						= f.collection_select :movement_id, Movement.order( :title ), :id, :title, class: 'form-control', prompt: '-- None --'
+						= f.label :reassign_to_metric_id, 'Reassign to Metric:'
+						= f.collection_select :reassign_to_metric_id, Franklin::Metric.where( user_id: @metric.user_id ).where.not( id: @metric.id ), :id, :title, { prompt: '--None--' }, { class: 'form-control' }
 
 					.form-group
 						= f.submit 'Update', class: 'btn btn-primary'

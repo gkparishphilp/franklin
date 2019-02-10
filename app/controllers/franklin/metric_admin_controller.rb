@@ -10,6 +10,7 @@ module Franklin
 		end
 
 		def destroy
+			die
 			@metric.destroy
 			redirect_to metric_admin_index_path
 		end

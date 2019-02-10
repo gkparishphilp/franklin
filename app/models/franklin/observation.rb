@@ -46,16 +46,20 @@ module Franklin
 
 
 
+		def base_unit
+			self.unit.base_unit
+		end
 
 		def display_value( opts={} )
 			opts[:precision] ||= 2
+			opts[:show_units] = true
 
 			if self.unit.nil?
 				"#{self.value}"
-			elsif self.sub.present?
-				"#{self.unit.convert_from_base( self.value, opts )} and #{self.sub.unit.convert_from_base( self.sub.value, opts )}"
+			#elsif self.sub.present?
+			#	"#{ConversionService.new( obs: self ).convert( opts )} and #{ConversionService.new( obs: self.self ).convert( opts )}"
 			else
-				self.unit.convert_from_base( self.value, opts )
+				ConversionService.new( obs: self ).convert( opts )
 			end
 		end
 

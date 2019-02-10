@@ -2,9 +2,7 @@ module Franklin
 	class ObservationsController < ApplicationController
 
 		def create
-			@observation = Observation.new( user: current_user )
-
-			@observation.content = params[:observation][:content]
+			@observation = Observation.new( user: current_user, content: params[:observation][:content] )
 
 			unit = Unit.find_by_alias( params[:observation][:unit_alias].try( :singularize ) )
 			@observation.unit = unit
@@ -23,7 +21,7 @@ module Franklin
 			end
 
 			if @observation.unit.present?
-				@observation.value = @observation.unit.convert_to_base( params[:observation][:value] )
+				@observation.value = Franklin::ConversionService.new( value: params[:observation][:value], from: @observation.unit ).convert
 			else
 				@observation.value = params[:observation][:value].to_f
 			end

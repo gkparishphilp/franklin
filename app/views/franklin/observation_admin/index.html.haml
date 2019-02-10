@@ -37,13 +37,15 @@
 					Stored Value
 
 				%th
+					Stored Unit
+
+				%th
 					Converted Value
 
 				%th
 					Unit
 
-				%th
-					Stored Unit
+				
 
 
 
@@ -52,7 +54,8 @@
 				- @observations.each do |observation|
 					%tr
 						%td
-							= observation.to_s
+							%a{ href: edit_observation_admin_path( observation ) }
+								= observation.to_s
 						%td
 							- if observation.user_id.present?
 								= User.find( observation.user_id )
@@ -61,8 +64,9 @@
 						%td
 							= observation.value
 						%td
-							= observation.unit.convert_from_base( observation.value )
+							= observation.unit.base_unit
+						%td
+							= Franklin::ConversionService.new( obs: observation, display: true ).convert
 						%td
 							= observation.unit
-						%td
-							= observation.unit.base_unit
+						

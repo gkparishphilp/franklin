@@ -14,20 +14,31 @@ module Franklin
 			# or a from_unit, to_unit, and value for arbitrary conversion
 			# => then from_unit == from_unit; to_unit == to_unit
 
-			@show_units = opts[:show_units] || opts[:display]
+			@show_units = opts[:show_units] || opts[:display] || opts[:display_units]
 
 			@time_format = opts[:time_format] || :long 
 			@precision = opts[:precision] || 16
 
 			observation = opts[:observation] || opts[:observed] || opts[:obs] || opts[:o]
 
-			if observation.present?
-				@value = observation.value
-				@from_unit = observation.unit 
-				@to_unit = observation.unit.try( :base_unit )
-			end
+			@value = opts[:amount] || opts[:value] || opts[:val] || opts[:v]
 
-			@value ||= opts[:amount] || opts[:value] || opts[:val] || opts[:v]
+			if observation.present?
+				# todo -- revisit this. Try to guess direction of conversion
+				# if observation is passed with nil value, assume we're storing 
+				# new and need to convert passed value to base.
+				# Otherwise, assume we're converting out of base to the display unit
+				# This won't  really work for update.....
+				if observation.value.present?
+					# note that the observation value trumps val_param
+					@value = observation.value
+					@from_unit = observation.unit.try( :base_unit )
+					@to_unit = observation.unit 
+				else
+					@from_unit = observation.unit
+					@to_unit = observation.unit.try( :base_unit )
+				end
+			end
 
 			@from_unit ||= opts[:from_unit] || opts[:from]
 			if @from_unit.is_a?( String )
@@ -58,7 +69,10 @@ module Franklin
 		end
 
 
-		def convert
+		def convert( opts={} )
+			@show_units = opts[:show_units] if opts[:show_units]
+			@precision = opts[:precision] if opts[:precision]
+			@time_format = opts[:time_format] if opts[:time_format]
 
 			if @to_unit.is_base?
 				if @to_unit.time?

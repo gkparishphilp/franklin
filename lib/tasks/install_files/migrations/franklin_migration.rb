@@ -2,11 +2,35 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 
 	def change
 
+		add_column 	:users, :use_imperial_units, :boolean, default: true
+
+
+		create_table :franklin_foods do |t|
+			t.references 		:user 
+			t.references		:category
+			t.integer			:serving_unit
+			t.string 			:name
+			t.string   			:slug
+			t.text 				:description
+			t.text     			:aliases,		default: [],	 array: true
+			t.float 			:serving_size
+			
+			t.timestamps
+		end
+
+		create_table :franklin_food_nutrients do |t|
+			t.references 		:food
+			t.references		:nutrient_metric
+			t.float 			:value
+			
+			t.timestamps
+		end
+
 		create_table :franklin_metrics do |t|
 			t.string			:title
-			t.integer  			:category_id
-			t.integer  			:unit_id
-			t.integer  			:user_id
+			t.references 		:category
+			t.references 		:unit
+			t.references 		:user
 			t.string   			:slug
 			t.text     			:aliases,            default: [],         array: true
 			t.text     			:description
@@ -19,13 +43,12 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 
 		create_table :franklin_observations do |t|
 			t.string   			:tmp_id
-			t.integer  			:unit_id
-			t.integer  			:user_id
-			t.integer  			:parent_id
+			t.references  		:observed, polymorphic: true
+			t.references 		:unit
+			t.references 		:user
+			t.references 		:parent
 			t.integer  			:lft
 			t.integer  			:rgt
-			t.integer  			:observed_id
-			t.string   			:observed_type
 			t.string   			:title
 			t.string   			:content
 			t.float    			:value
@@ -41,10 +64,9 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 		end
 
 		create_table :franklin_targets do |t|
-			t.integer  			:parent_obj_id
-			t.string   			:parent_obj_type
-			t.integer  			:user_id
-			t.integer  			:unit_id
+			t.references 		:parent_obj, polymorphic: true
+			t.references  		:user
+			t.references  		:unit
 			t.string   			:target_type,     default: :value
 			t.float    			:value
 			t.float    			:min
@@ -59,13 +81,13 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
     	end
 
     	create_table :franklin_units, force: :cascade do |t|
-			t.integer  			:base_unit_id
-			t.integer  			:imperial_correlate_id
-			t.integer  			:user_id
-			t.integer  			:metric_id
-			t.float    			:conversion_factor,        default: 1.0
-			t.integer  			:custom_base_unit_id
-			t.float    			:custom_conversion_factor
+			t.references 		:base_unit
+			t.references 		:imperial_correlate
+			t.references 		:user
+			t.references 		:metric
+			t.references		:custom_base_unit
+			t.float    			:conversion_factor,			default: 1.0
+			t.float    			:custom_conversion_factor,	default: 1.0
 			t.string   			:name
 			t.string   			:slug
 			t.string   			:abbrev
@@ -77,9 +99,8 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 		end
 
 		create_table :franklin_user_inputs do |t|
-			t.integer  			:user_id
-			t.integer  			:result_obj_id
-			t.string   			:result_obj_type
+			t.references 		:user
+			t.references 		:result_obj, polymorphic: true
 			t.text     			:content
 			t.string   			:source
 			t.string   			:action,          default: :created

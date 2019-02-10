@@ -13,6 +13,11 @@ module Franklin
 			redirect_to observation_admin_index_path
 		end
 
+		def edit
+			@metrics = Franklin::Metric.order( :title )
+			@units = Franklin::Unit.order( :name )
+		end
+
 		def index
 			by = params[:by] || 'title'
 			dir = params[:dir] || 'asc'
@@ -39,7 +44,7 @@ module Franklin
 			end
 
 			def set_observation
-				@observation = Observation.friendly.find( params[:id] )
+				@observation = Observation.find( params[:id] )
 			end
 	end
 end

@@ -1,0 +1,68 @@
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Observation Admin', observation_admin_index_path
+				%li
+					%strong
+						Edit
+						= @observation.to_s
+		.col-xs-2
+	
+	= form_for @observation, url: observation_admin_path( @observation ) do |f|
+		.row
+			.col-xs-8
+				.row
+					.col-sm-4
+						.form_group
+							= f.label :observed_id
+							= f.collection_select :observed_id, @metrics, :id, :title, {}, class: 'form-control'
+					.col-sm-4
+						.form-group
+							= f.label :value
+							= f.text_field :value, class: 'form-control'
+					.col-sm-4
+						.form-group
+							= f.label :unit_id, 'Unit'
+							= f.collection_select :unit_id, @units, :id, :name, {}, class: 'form-control'
+				.row
+
+					.form-group
+						= f.label :content
+						= f.text_area :content, class: 'form-control wysiwyg', rows: 12
+
+					.form-group
+						= f.label :notes
+						= f.text_area :notes, class: 'form-control wysiwyg', rows: 12
+
+
+			.col-xs-4
+				.well
+					.form-group
+						= f.label :started_at
+						.input-group.date
+							= f.text_field :started_at, class: 'form-control'
+							%span.input-group-addon
+								%i.fa.fa-calendar
+					.form-group
+						= f.label :ended_at
+						.input-group.date
+							= f.text_field :ended_at, class: 'form-control'
+							%span.input-group-addon
+								%i.fa.fa-calendar
+						
+					.form-group
+						= f.label :recorded_at
+						.input-group.date
+							= f.text_field :recorded_at, class: 'form-control'
+							%span.input-group-addon
+								%i.fa.fa-calendar
+
+
+					.form-group
+						= f.submit 'Update', class: 'btn btn-primary'
+						.pull-right= link_to 'Cancel', :back, class: 'btn btn-default btn-sm'

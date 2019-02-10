@@ -50,6 +50,8 @@ namespace :franklin do
 	task load_units: :environment do
 		puts "Removing Old Units"
 		Franklin::Unit.destroy_all
+		Franklin::Observation.destroy_all
+		Franklin::Metric.destroy_all
 
 		puts "Adding some New Units"
 
@@ -57,6 +59,7 @@ namespace :franklin do
 		point = Franklin::Unit.create name: 'Point', abbrev: 'pt', unit_type: 'score'
 		round = Franklin::Unit.create name: 'Round', abbrev: 'rd', unit_type: 'score'
 		rep = Franklin::Unit.create name: 'Rep', abbrev: 'rep', unit_type: 'score'
+		score = Franklin::Unit.create name: 'Score', unit_type: 'score'
 
 		bpm = Franklin::Unit.create name: 'BPM', abbrev: 'bpm', aliases: ['heart rate'], unit_type: 'rate'
 
@@ -109,7 +112,7 @@ namespace :franklin do
 		l.update( imperial_correlate_id: gal.id )
 		ml.update( imperial_correlate_id: floz.id )
 
-		sec = Franklin::Unit.create name: 'Second', abbrev: 's', aliases: ['time'], unit_type: 'time'
+		sec = Franklin::Unit.create name: 'Second', abbrev: 's', aliases: ['time', 'sec'], unit_type: 'time'
 		min = Franklin::Unit.create name: 'Minute', abbrev: 'min', unit_type: 'time', base_unit: sec, conversion_factor: 60
 		hr = Franklin::Unit.create name: 'Hour', abbrev: 'hr', unit_type: 'time', base_unit: sec, conversion_factor: 3600
 		day = Franklin::Unit.create name: 'Day', abbrev: 'day', unit_type: 'time', base_unit: sec, conversion_factor: 86400
@@ -134,7 +137,7 @@ namespace :franklin do
 		cal = Franklin::Unit.find_by_alias 'cal'
 		block = Franklin::Unit.find_by_alias 'block'
 		g = Franklin::Unit.find_by_alias 'g'
-		sec = Franklin::Unit.find_by_alias 'sec'
+		sec = Franklin::Unit.find_by_alias 'time'
 		ml = Franklin::Unit.find_by_alias 'ml'
 		rep = Franklin::Unit.find_by_alias 'rep'
 		score = Franklin::Unit.find_by_alias 'score'
@@ -314,10 +317,10 @@ namespace :franklin do
 		act = Franklin::Metric.create title: 'Mile Time', default_value_type: 'min_value', aliases: ['mile', 'one mile', 'one mile run', '1 mile run', '1 mile'], unit: sec
 		act.targets.create target_type: :min_value, direction: :at_most, period: :all_time
 
-		act = Franklin::Metric.create title: 'Max Pushups', default_value_type: 'max_value', aliases: ['max pushup']
+		act = Franklin::Metric.create title: 'Max Pushups', default_value_type: 'max_value', aliases: ['max pushup'], unit: rep
 		act.targets.create target_type: :max_value, direction: :at_least, period: :all_time
 		
-		act = Franklin::Metric.create title: 'Max Pullups', default_value_type: 'max_value', aliases: ['max pullup']
+		act = Franklin::Metric.create title: 'Max Pullups', default_value_type: 'max_value', aliases: ['max pullup'], unit: rep
 		act.targets.create target_type: :max_value, direction: :at_least, period: :all_time
 		
 		act = Franklin::Metric.create title: 'Max Burpees', default_value_type: 'max_value', aliases: ['max burpee'], unit: rep
