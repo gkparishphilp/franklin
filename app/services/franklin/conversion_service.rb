@@ -52,15 +52,16 @@ module Franklin
 			end
 
 
-			@conversion_factor = 0.01 if @to_unit.percent?
+			@conversion_factor = 0.01 if @to_unit.try( :percent? )
 			@conversion_factor = 1 if @from_unit == @to_unit
-			if @to_unit.is_base?
+			if @to_unit.try( :is_base? )
 				@conversion_factor ||= @from_unit.try( :conversion_factor )
-			elsif @from_unit.is_base?
-				@conversion_factor ||= @to_unit.conversion_factor
+			elsif @from_unit.try( :is_base? )
+				@conversion_factor ||= @to_unit.try( :conversion_factor )
 			else
 				@conversion_factor ||= @from_unit.try( :conversion_factor )
 			end
+			@conversion_factor ||= 1
 
 			# if not( @from_unit.unit_type == @to_unit.unit_type )
 			# 	raise "Can't convert incompatible units!"
@@ -73,6 +74,8 @@ module Franklin
 			@show_units = opts[:show_units] if opts[:show_units]
 			@precision = opts[:precision] if opts[:precision]
 			@time_format = opts[:time_format] if opts[:time_format]
+
+			return @value if @to_unit.nil?
 
 			if @to_unit.is_base?
 				if @to_unit.time?

@@ -33,6 +33,10 @@
 				%th
 					Unit Type
 				%th
+					Base Unit
+				%th
+					Imperial Correlate
+				%th
 					User
 
 				%th
@@ -49,6 +53,10 @@
 							= link_to unit.name, edit_unit_admin_path( unit )
 						%td
 							= unit.unit_type
+						%td
+							= unit.base_unit
+						%td
+							= unit.imperial_correlate
 						%td
 							- if unit.user_id.present?
 								%a{ href: swell_media.edit_user_admin_path( User.find( unit.user_id ) ) }

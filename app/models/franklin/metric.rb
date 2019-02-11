@@ -51,6 +51,10 @@ module Franklin
 			self.aliases = aliases_csv.split( /,\s*/ )
 		end
 
+		def base_unit
+			self.unit.try( :base_unit )
+		end
+
 
 		def default_value( args={} )
 			# show current default state of the metric

@@ -47,7 +47,7 @@ module Franklin
 
 
 		def base_unit
-			self.unit.base_unit
+			self.unit.try( :base_unit )
 		end
 
 		def display_value( opts={} )

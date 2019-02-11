@@ -12,7 +12,8 @@
 						Edit
 						= @observation.to_s
 		.col-xs-2
-	
+			%a.btn.btn-danger{ href: observation_admin_path( @observation ), data: { method: 'delete', confirm: 'Are you sure?' } }
+				Delete
 	= form_for @observation, url: observation_admin_path( @observation ) do |f|
 		.row
 			.col-xs-8

@@ -2,7 +2,7 @@ module Franklin
 	class ObservationsController < ApplicationController
 
 		def create
-			@observation = Observation.new( user: current_user, content: params[:observation][:content] )
+			@observation = Observation.new( user: current_user, observed_id: params[:observation][:observed_id], observed_type: params[:observation][:observed_type], content: params[:observation][:content] )
 
 			unit = Unit.find_by_alias( params[:observation][:unit_alias].try( :singularize ) )
 			@observation.unit = unit
@@ -12,6 +12,7 @@ module Franklin
 				if system_metric.present?
 					metric = system_metric.dup
 					metric.user = current_user
+					metric.unit = metric.unit.imperial_correlate if current_user.use_imperial_units? && metric.unit.imperial_correlate.present?
 					metric.save
 				else
 					metric = Metric.new( user: current_user, unit: unit, title: params[:observation][:metric_alias] )
@@ -20,8 +21,9 @@ module Franklin
 
 			end
 
+			@observation.unit ||= metric.unit
 			if @observation.unit.present?
-				@observation.value = Franklin::ConversionService.new( value: params[:observation][:value], from: @observation.unit ).convert
+				@observation.value = Franklin::ConversionService.new( value: params[:observation][:value], obs: @observation ).convert
 			else
 				@observation.value = params[:observation][:value].to_f
 			end
@@ -40,7 +42,7 @@ module Franklin
 		private
 
 			def observation_params
-				params.require( :observation ).permit( :content, :value, :metric_id, :metric_alias, :unit_id, :unit_alias )
+				params.require( :observation ).permit( :content, :value, :metric_alias, :unit_id, :unit_alias )
 			end
 	end
 end

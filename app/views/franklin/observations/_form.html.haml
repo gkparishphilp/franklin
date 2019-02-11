@@ -1,7 +1,7 @@
 = form_for Franklin::Observation.new do |f|
 	.form_group
-		= f.collection_select :metric_id, Franklin::Metric.where( user_id: current_user.id ), :id, :title, class: 'form-control'
-		= f.hidden_field :parent_obj_type, value: 'Franklin::Metric'
+		=# f.collection_select :observed_id, Franklin::Metric.where( user_id: current_user.id ), :id, :title, class: 'form-control'
+		=# f.hidden_field :observed_type, value: 'Franklin::Metric'
 	.form-group
 		= f.label :metric_alias, 'Metric'
 		= f.text_field :metric_alias

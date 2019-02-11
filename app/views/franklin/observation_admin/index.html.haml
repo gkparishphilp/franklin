@@ -64,7 +64,7 @@
 						%td
 							= observation.value
 						%td
-							= observation.unit.base_unit
+							= observation.base_unit
 						%td
 							= Franklin::ConversionService.new( obs: observation, display: true ).convert
 						%td
