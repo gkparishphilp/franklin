@@ -198,6 +198,9 @@ namespace :franklin do
 		nutrition = Franklin::Metric.create title: 'Carb', default_value_type: 'sum_value', 		aliases: ['carb', 'carbs', 'carbohydrates', 'grams carb', 'grams of carb', 'net carbs' ], unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 40
 		
+		nutrition = Franklin::Metric.create title: 'Fiber', default_value_type: 'sum_value', 	aliases: ['fib', 'grams fiber', 'grams of fiber' ], unit: g, default_period: 'day'
+		nutrition.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 40
+
 		nutrition = Franklin::Metric.create title: 'Sugar', default_value_type: 'sum_value', 	aliases: ['sugars', 'grams sugar', 'grams of sugar' ], unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 20
 		
@@ -332,6 +335,45 @@ namespace :franklin do
 		act = Franklin::Metric.create title: 'Round of Golf', default_value_type: 'min_value', aliases: ['golf', 'golfing', 'golfed', 'golf score'], unit: score
 		act.targets.create target_type: :min_value, direction: :at_most, period: :all_time, value: 80
 
+	end
+
+	task load_foods: :environment do
+		puts "Removing Old Foods"
+		Franklin::Food.destroy_all
+		Franklin::FoodNutrient.destroy_all
+
+		g = Franklin::Unit.find_by_alias 'g'
+		oz = Franklin::Unit.find_by_alias 'oz'
+		cup = Franklin::Unit.find_by_alias 'cup'
+
+		cal = Franklin::Metric.find_by_alias 'cal'
+		prot = Franklin::Metric.find_by_alias 'pro'
+		fat = Franklin::Metric.find_by_alias 'fat'
+		carb = Franklin::Metric.find_by_alias 'carb'
+		fiber = Franklin::Metric.find_by_alias 'fiber'
+		sugar = Franklin::Metric.find_by_alias 'sugar'
+		alc = Franklin::Metric.find_by_alias 'alcohol'
+
+		nutrition = Franklin::Metric.create title: 'Cholesterol', default_value_type: 'sum_value', 	aliases: ['chol', 'grams cholesterol', 'grams of cholesterol' ], unit: g, default_period: 'day'
+		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 10
+
+		nutrition = Franklin::Metric.create title: 'Sodium', default_value_type: 'sum_value', 	aliases: ['salt', 'grams salt', 'grams of salt' ], unit: g, default_period: 'day'
+		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 100
+
+
+		almonds = Franklin::Food.create name: 'Almond', aliases: [], serving_amount: 28.4, serving_unit: g
+		nut = almonds.food_nutrients.create metric: prot, amount: 6, unit: g
+		nut = almonds.food_nutrients.create metric: fat, amount: 14, unit: g
+		nut = almonds.food_nutrients.create metric: carb, amount: 6, unit: g
+		nut = almonds.food_nutrients.create metric: fiber, amount: 3.5, unit: g
+		nut = almonds.food_nutrients.create metric: sugar, amount: 1.1, unit: g
+
+		macs = Franklin::Food.create name: 'Macadamia Nuts', aliases: [ 'mac', 'mac nut', 'macadamia' ], serving_amount: 28.4, serving_unit: g
+		nut = almonds.food_nutrients.create metric: prot, amount: 2.2, unit: g
+		nut = almonds.food_nutrients.create metric: fat, amount: 21, unit: g
+		nut = almonds.food_nutrients.create metric: carb, amount: 3.9, unit: g
+		nut = almonds.food_nutrients.create metric: fiber, amount: 2.4, unit: g
+		nut = almonds.food_nutrients.create metric: sugar, amount: 1.3, unit: g
 
 	end
 

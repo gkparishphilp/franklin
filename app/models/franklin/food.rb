@@ -1,6 +1,6 @@
 module Franklin
 	class Food < ApplicationRecord
-		has_many :nutrients, class_name: 'Franklin::FoodNutrient'
+		has_many :food_nutrients
 
 		include FriendlyId
 		friendly_id :slugger, use: [ :slugged ]

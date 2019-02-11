@@ -79,10 +79,10 @@ module Franklin
 
 			if @to_unit.is_base?
 				if @to_unit.time?
-					if not( @value.strip.match( /\D+/ ) )
+					if not( @value.to_s.strip.match( /\D+/ ) )
 						@value = "#{@value} #{@from_unit.name}"
 					end
-					output = ChronicDuration.parse( @value )
+					output = ChronicDuration.parse( @value.to_s )
 				else
 					output = convert_to_base( @value, @to_unit, @conversion_factor )
 				end
