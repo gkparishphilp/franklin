@@ -19,10 +19,10 @@
 		.col-xs-6
 			= raw paginate @foods
 		.col-xs-6
-			= form_tag user_food_admin_index_path, method: :get, class: 'pull-right form-inline' do
+			= form_tag food_admin_index_path, method: :get, class: 'pull-right form-inline' do
 				= text_field_tag :q, params[:q], class: 'form-control'
 				= submit_tag 'Search', class: 'btn btn-primary'
-				= link_to 'Clear', user_food_admin_index_path, class: 'btn btn-default btn-xs'
+				= link_to 'Clear', food_admin_index_path, class: 'btn btn-default btn-xs'
 
 	.row
 		%table.table.table-striped
@@ -41,17 +41,7 @@
 						
 						%td
 							= food.name
-						%td
-							= food.user.avatar_tag width: 24
-
-							= food.user
-							said: 
-							= "'#{food.content}'"
-							from
-							= food.source
-							.response{ style: 'margin-left:2em;margin-top:1em;' }
-								I:
-								= food.system_notes
+						
 						%td
 							.time-ago
 								%i.fa.fa-clock-o
