@@ -1,6 +1,14 @@
+
+# Foods
+
 module Franklin
 	class Food < ApplicationRecord
-		has_many :food_nutrients
+
+		belongs_to 	:category, optional: true
+		belongs_to 	:user, optional: true
+		belongs_to 	:serving_unit, class_name: 'Franklin::Unit', optional: true
+
+		has_many 	:nutrients
 
 		include FriendlyId
 		friendly_id :slugger, use: [ :slugged ]

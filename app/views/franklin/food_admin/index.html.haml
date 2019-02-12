@@ -11,7 +11,7 @@
 						= "(#{pluralize @foods.total_count, 'Food'})"
 
 		.col-xs-2
-			%a.btn.btn-success{ href: '#TODO?' }
+			%a.btn.btn-success{ data: { toggle: :modal, target: '#new_food' } }
 				%i.fa.fa-plus-square
 				New
 
@@ -30,6 +30,11 @@
 				%th
 					Name
 				%th
+					Aliases
+				%th
+					Serving Amount
+				%th
+					Serving Unit
 				%th
 
 
@@ -40,12 +45,18 @@
 					%tr
 						
 						%td
-							= food.name
+							%a{ href: edit_food_admin_path( food ) }
+								= food.name
 						
 						%td
-							.time-ago
-								%i.fa.fa-clock-o
-								= time_ago_in_words food.created_at
-								ago.
-								%br
-								= food.created_at.to_s( :slashed_time )
+							= food.aliases_csv
+
+						%td
+							= food.serving_amount
+
+						%td
+							= food.serving_unit
+
+
+
+= render 'new_modal'

@@ -1,1 +1,89 @@
-edit.html.haml
+
+.container-fluid
+	.row
+		.col-xs-10
+			%ul.breadcrumb
+				%li
+					= link_to 'Admin', main_app.admin_index_path
+				%li
+					= link_to 'Food Admin', food_admin_index_path
+				%li
+					%strong
+						Edit
+						= @food.to_s
+		.col-xs-2
+			%a.btn.btn-danger{ href: food_admin_path( @food ), data: { method: 'delete', confirm: 'Are you sure?' } }
+				Delete
+	= form_for @food, url: food_admin_path( @food ) do |f|
+		.row
+			.col-sm-8
+				.row
+
+					.form-group
+						= f.label :name
+						= f.text_field :name, class: 'form-control'
+
+					.form-group
+						= f.label :aliases_csv, 'Aliases'
+						= f.text_field :aliases_csv, class: 'form-control'
+
+
+					.form-group
+						= f.label :description
+						= f.text_area :description, class: 'form-control wysiwyg', rows: 12
+
+
+
+			.col-sm-4
+				.well
+
+					.form-group
+						= f.label :serving_amount
+						= f.text_field :serving_amount, class: 'form-control'
+					
+					.form-group
+						= f.label :serving_unit_id
+						= f.select :serving_unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, { include_blank: '-- None --' }, class: 'form-control'
+						
+
+
+					.form-group
+						= f.submit 'Update', class: 'btn btn-primary'
+						.pull-right= link_to 'Cancel', :back, class: 'btn btn-default btn-sm'
+
+	.row
+		.col-sm-8
+			%h3 Nutrients
+
+			%table.table
+				%thead
+					%th
+						Name
+					%th
+						Amount
+					%th
+						Unit
+					%th
+				%tbody
+					- @food.nutrients.each do |nutrient|
+						%tr
+							%td
+								= nutrient.metric.to_s
+							%td
+								= nutrient.amount
+							%td
+								= nutrient.unit
+							%td
+								= nutrient.per
+					= form_for @food.nutrients.new, url: nutrient_admin_index_path do |f|
+						%tr
+							%td
+								= f.text_field :metric_alias, class: 'form-control'
+							%td
+								= f.text_field :amount, class: 'form-control'
+							%td
+							%td
+								= f.submit 'Add', class: 'btn btn-md btn-success'
+
+
+		.col-sm-4

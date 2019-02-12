@@ -7,23 +7,22 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 
 		create_table :franklin_foods do |t|
 			t.references 		:user 
+			t.references		:serving_unit
 			t.references		:category
+			t.float 			:serving_amount
 			t.string 			:name
 			t.string   			:slug
 			t.text 				:description
 			t.text     			:aliases,		default: [],	 array: true
-			t.integer			:serving_unit
-			t.float 			:serving_amount
+			t.hstore   			:properties,    default: {}
 			
 			t.timestamps
 		end
 
-		create_table :franklin_food_nutrients do |t|
+		create_table :franklin_nutrients do |t|
 			t.references 		:food
-			t.references 		:unit
 			t.references		:metric
 			t.float 			:amount
-			t.string			:per, 		default: 'serving'
 			
 			t.timestamps
 		end

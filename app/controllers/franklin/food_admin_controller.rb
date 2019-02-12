@@ -2,6 +2,14 @@ module Franklin
 	class FoodAdminController < ApplicationAdminController
 		before_action :set_food, only: [:show, :edit, :update, :destroy]
 		
+		
+
+		def create
+			@food = Food.new( food_params )
+			@food.save
+			redirect_to edit_food_admin_path( @food )
+		end
+
 		def destroy
 			@food.destroy
 			redirect_to food_admin_index_path
@@ -10,6 +18,7 @@ module Franklin
 		def index
 			by = params[:by] || 'created_at'
 			dir = params[:dir] || 'desc'
+
 			@foods = Food.order( "#{by} #{dir}" )
 			
 			if params[:user].present?

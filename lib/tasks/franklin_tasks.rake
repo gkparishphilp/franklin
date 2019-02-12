@@ -340,7 +340,7 @@ namespace :franklin do
 	task load_foods: :environment do
 		puts "Removing Old Foods"
 		Franklin::Food.destroy_all
-		Franklin::FoodNutrient.destroy_all
+		Franklin::Nutrient.destroy_all
 
 		g = Franklin::Unit.find_by_alias 'g'
 		oz = Franklin::Unit.find_by_alias 'oz'
@@ -362,18 +362,26 @@ namespace :franklin do
 
 
 		almonds = Franklin::Food.create name: 'Almond', aliases: [], serving_amount: 28.4, serving_unit: g
-		nut = almonds.food_nutrients.create metric: prot, amount: 6, unit: g
-		nut = almonds.food_nutrients.create metric: fat, amount: 14, unit: g
-		nut = almonds.food_nutrients.create metric: carb, amount: 6, unit: g
-		nut = almonds.food_nutrients.create metric: fiber, amount: 3.5, unit: g
-		nut = almonds.food_nutrients.create metric: sugar, amount: 1.1, unit: g
+		nut = almonds.nutrients.create metric: prot, amount: 0.21, unit: g
+		nut = almonds.nutrients.create metric: fat, amount: 0.49, unit: g
+		nut = almonds.nutrients.create metric: carb, amount: 0.22, unit: g
+		nut = almonds.nutrients.create metric: fiber, amount: 0.12, unit: g
+		nut = almonds.nutrients.create metric: sugar, amount: 0.039, unit: g
 
 		macs = Franklin::Food.create name: 'Macadamia Nuts', aliases: [ 'mac', 'mac nut', 'macadamia' ], serving_amount: 28.4, serving_unit: g
-		nut = almonds.food_nutrients.create metric: prot, amount: 2.2, unit: g
-		nut = almonds.food_nutrients.create metric: fat, amount: 21, unit: g
-		nut = almonds.food_nutrients.create metric: carb, amount: 3.9, unit: g
-		nut = almonds.food_nutrients.create metric: fiber, amount: 2.4, unit: g
-		nut = almonds.food_nutrients.create metric: sugar, amount: 1.3, unit: g
+		nut = macs.nutrients.create metric: prot, amount: 0.08, unit: g
+		nut = macs.nutrients.create metric: fat, amount: 0.76, unit: g
+		nut = macs.nutrients.create metric: carb, amount: 0.14, unit: g
+		nut = macs.nutrients.create metric: fiber, amount: 0.9, unit: g
+		nut = macs.nutrients.create metric: sugar, amount: 0.046, unit: g
+
+		avocado = Franklin::Food.create name: 'Avocado', aliases: [], serving_amount: 28.4, serving_unit: g
+		nut = avocado.nutrients.create metric: cal, amount: 1.6
+		nut = avocado.nutrients.create metric: fat, amount: 0.15, unit: g
+		nut = avocado.nutrients.create metric: carb, amount: 0.09, unit: g
+		nut = avocado.nutrients.create metric: fiber, amount: 0.07, unit: g
+		nut = avocado.nutrients.create metric: sugar, amount: 0.007, unit: g
+		nut = avocado.nutrients.create metric: prot, amount: 0.02, unit: g
 
 	end
 
