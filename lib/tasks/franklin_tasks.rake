@@ -358,30 +358,48 @@ namespace :franklin do
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 10
 
 		nutrition = Franklin::Metric.create title: 'Sodium', default_value_type: 'sum_value', 	aliases: ['salt', 'grams salt', 'grams of salt' ], unit: g, default_period: 'day'
-		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 100
+		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 2.3
 
 
 		almonds = Franklin::Food.create name: 'Almond', aliases: [], serving_amount: 28.4, serving_unit: g
-		nut = almonds.nutrients.create metric: prot, amount: 0.21, unit: g
-		nut = almonds.nutrients.create metric: fat, amount: 0.49, unit: g
-		nut = almonds.nutrients.create metric: carb, amount: 0.22, unit: g
-		nut = almonds.nutrients.create metric: fiber, amount: 0.12, unit: g
-		nut = almonds.nutrients.create metric: sugar, amount: 0.039, unit: g
+		nut = almonds.nutrients.create metric: cal, amount: 5.76
+		nut = almonds.nutrients.create metric: fat, amount: 0.49
+		nut = almonds.nutrients.create metric: carb, amount: 0.22
+		nut = almonds.nutrients.create metric: fiber, amount: 0.12
+		nut = almonds.nutrients.create metric: sugar, amount: 0.039
+		nut = almonds.nutrients.create metric: prot, amount: 0.21
 
 		macs = Franklin::Food.create name: 'Macadamia Nuts', aliases: [ 'mac', 'mac nut', 'macadamia' ], serving_amount: 28.4, serving_unit: g
-		nut = macs.nutrients.create metric: prot, amount: 0.08, unit: g
-		nut = macs.nutrients.create metric: fat, amount: 0.76, unit: g
-		nut = macs.nutrients.create metric: carb, amount: 0.14, unit: g
-		nut = macs.nutrients.create metric: fiber, amount: 0.9, unit: g
-		nut = macs.nutrients.create metric: sugar, amount: 0.046, unit: g
+		nut = macs.nutrients.create metric: cal, amount: 7.18
+		nut = macs.nutrients.create metric: fat, amount: 0.76
+		nut = macs.nutrients.create metric: carb, amount: 0.14
+		nut = macs.nutrients.create metric: fiber, amount: 0.9
+		nut = macs.nutrients.create metric: sugar, amount: 0.046
+		nut = macs.nutrients.create metric: prot, amount: 0.08
 
-		avocado = Franklin::Food.create name: 'Avocado', aliases: [], serving_amount: 28.4, serving_unit: g
+		avocado = Franklin::Food.create name: 'Avocado', aliases: [], serving_amount: 50, serving_unit: g
 		nut = avocado.nutrients.create metric: cal, amount: 1.6
-		nut = avocado.nutrients.create metric: fat, amount: 0.15, unit: g
-		nut = avocado.nutrients.create metric: carb, amount: 0.09, unit: g
-		nut = avocado.nutrients.create metric: fiber, amount: 0.07, unit: g
-		nut = avocado.nutrients.create metric: sugar, amount: 0.007, unit: g
-		nut = avocado.nutrients.create metric: prot, amount: 0.02, unit: g
+		nut = avocado.nutrients.create metric: fat, amount: 0.15
+		nut = avocado.nutrients.create metric: carb, amount: 0.09
+		nut = avocado.nutrients.create metric: fiber, amount: 0.07
+		nut = avocado.nutrients.create metric: sugar, amount: 0.007
+		nut = avocado.nutrients.create metric: prot, amount: 0.02
+
+		egg = Franklin::Food.create name: 'Egg', aliases: [], serving_amount: 50, serving_unit: g
+		nut = egg.nutrients.create metric: cal, amount: 1.55
+		nut = egg.nutrients.create metric: fat, amount: 0.11
+		nut = egg.nutrients.create metric: carb, amount: 0.011
+		nut = egg.nutrients.create metric: fiber, amount: 0
+		nut = egg.nutrients.create metric: sugar, amount: 0.011
+		nut = egg.nutrients.create metric: prot, amount: 0.13
+
+		broccoli = Franklin::Food.create name: 'Broccoli', aliases: [], serving_amount: 200, serving_unit: g
+		nut = broccoli.nutrients.create metric: cal, amount: 0.34
+		nut = broccoli.nutrients.create metric: fat, amount: 0.004
+		nut = broccoli.nutrients.create metric: carb, amount: 0.7
+		nut = broccoli.nutrients.create metric: fiber, amount: 0.026
+		nut = broccoli.nutrients.create metric: sugar, amount: 0.017
+		nut = broccoli.nutrients.create metric: prot, amount: 0.028
 
 	end
 

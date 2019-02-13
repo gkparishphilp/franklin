@@ -1,0 +1,51 @@
+
+.container
+	.row
+		.col-sm-12
+			= form_for Franklin::UserInput.new do |f|
+				.form_group
+					= f.text_field :content
+				.form_group
+					= f.submit 'Enter', class: 'btn btn-md'
+
+
+
+	.row
+		%table.table.table-striped
+			%thead
+				%th
+					User
+
+				%th
+				%th
+
+
+
+
+			%tbody
+				- @inputs.each do |input|
+					%tr
+						
+						%td
+							- if input.user_id.present?
+								= input.user
+							- else
+								System
+						%td
+							= input.user.avatar_tag width: 24
+
+							= input.user
+							said: 
+							= "'#{input.content}'"
+							from
+							= input.source
+							.response{ style: 'margin-left:2em;margin-top:1em;' }
+								I:
+								= input.system_notes
+						%td
+							.time-ago
+								%i.fa.fa-clock-o
+								= time_ago_in_words input.created_at
+								ago.
+								%br
+								= input.created_at.to_s( :slashed_time )

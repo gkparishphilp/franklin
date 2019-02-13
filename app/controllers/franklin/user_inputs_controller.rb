@@ -1,13 +1,20 @@
 module Franklin
 	class UserInputsController < ApplicationController
 
+
 		def create
 			@input = UserInput.new( user_input_params )
 			@input.user = current_user
 
 			@input.save
 
-			redirect_back fallback_location: new_user_input_path
+			@input.process!
+
+			redirect_back fallback_location: user_inputs_path
+		end
+
+		def index
+			@inputs = current_user.user_inputs
 		end
 
 

@@ -32,13 +32,13 @@ module Franklin
 		def update
 			@food.update( food_params )
 
-			redirect_to :back
+			redirect_back fallback_location: food_admin_index_path
 		end
 
 
 		private
 			def food_params
-				params.require( :food ).permit( :name, :category_id, :aliases_csv, :serving_unit, :serving_amount )
+				params.require( :food ).permit( :name, :category_id, :aliases_csv, :serving_unit_id, :serving_amount )
 			end
 
 			def set_food

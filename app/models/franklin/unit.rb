@@ -12,6 +12,8 @@ module Franklin
 		include FriendlyId
 		friendly_id :name, use: :slugged
 
+		acts_as_taggable_array_on :aliases
+
 		attr_accessor :custom_base_unit_name
 
 		def self.base

@@ -62,8 +62,8 @@
 					%th
 						Amount
 					%th
-						Unit
-					%th
+						per serving
+				
 				%tbody
 					- @food.nutrients.each do |nutrient|
 						%tr
@@ -72,16 +72,21 @@
 							%td
 								= nutrient.amount
 							%td
-								= nutrient.unit
+								%strong
+									= ( nutrient.amount * nutrient.food.serving_amount ).round( 2 )
+									= nutrient.metric.unit.abbrev
 							%td
-								= nutrient.per
+								%a.btn.btn-sm.btn-danger{ href: nutrient_admin_path( nutrient ), data: { method: :delete } }
+									%i.fa.fa-trash
+								
 					= form_for @food.nutrients.new, url: nutrient_admin_index_path do |f|
+						= f.hidden_field :food_id, value: @food.id
 						%tr
 							%td
 								= f.text_field :metric_alias, class: 'form-control'
 							%td
 								= f.text_field :amount, class: 'form-control'
-							%td
+
 							%td
 								= f.submit 'Add', class: 'btn btn-md btn-success'
 

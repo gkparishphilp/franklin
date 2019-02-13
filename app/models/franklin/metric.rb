@@ -20,6 +20,8 @@ module Franklin
 		include FriendlyId
 		friendly_id :slugger, use: [ :slugged ]
 
+		acts_as_taggable_array_on :aliases
+
 		def self.find_by_alias( term )
 			return false if term.blank?
 			where( ":term = ANY( aliases )", term: term.parameterize ).first

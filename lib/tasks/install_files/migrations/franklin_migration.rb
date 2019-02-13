@@ -9,7 +9,7 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.references 		:user 
 			t.references		:serving_unit
 			t.references		:category
-			t.float 			:serving_amount
+			t.float 			:serving_amount, default: 100
 			t.string 			:name
 			t.string   			:slug
 			t.text 				:description
@@ -51,7 +51,7 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 			t.integer  			:lft
 			t.integer  			:rgt
 			t.string   			:title
-			t.string   			:content
+			t.text  			:content
 			t.float    			:value
 			t.string   			:rx
 			t.text     			:notes

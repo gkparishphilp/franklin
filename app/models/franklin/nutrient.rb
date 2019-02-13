@@ -7,7 +7,6 @@ module Franklin
 
 		belongs_to :food
 		belongs_to :metric
-		belongs_to :unit
 
 		attr_accessor 	:metric_alias
 

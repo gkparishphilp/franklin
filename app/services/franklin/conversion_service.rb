@@ -30,6 +30,7 @@ module Franklin
 				# Otherwise, assume we're converting out of base to the display unit
 				# This won't  really work for update.....
 				if observation.value.present?
+					# since value is in db, we're assuming conversion from base -> unit 
 					# note that the observation value trumps val_param
 					@value = observation.value
 					@from_unit = observation.unit.try( :base_unit )
@@ -51,9 +52,6 @@ module Franklin
 				@to_unit = Unit.system.find_by_alias( @to_unit.singularize.downcase )
 			end
 
-
-			@conversion_factor = 0.01 if @to_unit.try( :percent? )
-			@conversion_factor = 1 if @from_unit == @to_unit
 			if @to_unit.try( :is_base? )
 				@conversion_factor ||= @from_unit.try( :conversion_factor )
 			elsif @from_unit.try( :is_base? )
@@ -75,14 +73,14 @@ module Franklin
 			@precision = opts[:precision] if opts[:precision]
 			@time_format = opts[:time_format] if opts[:time_format]
 
-			return @value if @to_unit.nil?
+			return @value if ( @to_unit.nil? || @from_unit.nil? )
 
 			if @to_unit.is_base?
 				if @to_unit.time?
 					if not( @value.to_s.strip.match( /\D+/ ) )
 						@value = "#{@value} #{@from_unit.name}"
 					end
-					output = ChronicDuration.parse( @value.to_s )
+					output = ChronicDuration.parse( @value )
 				else
 					output = convert_to_base( @value, @to_unit, @conversion_factor )
 				end
