@@ -21,6 +21,7 @@ module Franklin
 		end
 
 		def self.find_by_alias( term )
+			term = term.strip.singularize
 			term = term.parameterize if term.present? && term.length > 1
 			where( ":term = ANY( aliases )", term: term ).first
 		end

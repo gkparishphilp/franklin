@@ -5,3 +5,57 @@
 				Enter an Observation
 
 			= render 'form'
+
+
+
+	.row
+		.col-xs-6
+			= raw paginate @observations
+
+	.row
+		%table.table.table-striped
+			%thead
+				%th
+					Title
+
+				%th
+					User
+
+				%th
+					Stored Value
+
+				%th
+					Stored Unit
+
+				%th
+					Converted Value
+
+				%th
+					Observation Unit
+
+				
+
+
+
+
+			%tbody
+				- @observations.each do |observation|
+					%tr
+						%td
+							%a{ href: edit_observation_admin_path( observation ) }
+								= observation.to_s
+						%td
+							- if observation.user_id.present?
+								= User.find( observation.user_id )
+							- else
+								System
+						%td
+							= observation.value
+						%td
+							= observation.base_unit
+						%td
+							= Franklin::ConversionService.new( v: observation.value, from: observation.base_unit, to: observation.recorded_unit, display: true ).convert
+						%td
+							= observation.recorded_unit
+						
+

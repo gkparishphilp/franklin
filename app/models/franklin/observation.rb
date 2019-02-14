@@ -8,7 +8,7 @@ module Franklin
 		belongs_to 	:parent, class_name: 'Observation', optional: true
 		has_many 	:subs, foreign_key: :parent_id, class_name: 'Observation'
 		belongs_to 	:user
-		belongs_to 	:unit, optional: true # ?
+		belongs_to 	:recorded_unit, class_name: 'Franklin::Unit', optional: true # ?
 
 		attr_accessor :metric_alias, :metric_id, :unit_alias
 
@@ -45,16 +45,18 @@ module Franklin
 		end
 
 
-
 		def base_unit
-			self.unit.try( :base_unit )
+			unit = self.recorded_unit.try( :base_unit )
+			unit = self.observed.try( :base_unit )
+			unit ||= self.recorded_unit
+			return unit
 		end
 
 		def display_value( opts={} )
 			opts[:precision] ||= 2
 			opts[:show_units] = true
 
-			if self.unit.nil?
+			if self.recorded_unit.nil?
 				"#{self.value}"
 			#elsif self.sub.present?
 			#	"#{ConversionService.new( obs: self ).convert( opts )} and #{ConversionService.new( obs: self.self ).convert( opts )}"
@@ -114,7 +116,7 @@ module Franklin
 				self.recorded_at ||= Time.zone.now
 				#self.started_at ||= Time.zone.now
 
-				self.unit ||= self.observed.try( :unit )
+				self.recorded_unit ||= self.observed.try( :default_unit )
 			end
 
 

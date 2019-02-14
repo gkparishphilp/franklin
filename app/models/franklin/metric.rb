@@ -9,7 +9,7 @@ module Franklin
 
 		enum availability: { 'just_me' => 0, 'trainer' => 10, 'team' => 30, 'community' => 50, 'anyone' => 100 }
 
-		belongs_to :unit, optional: true
+		belongs_to :default_unit, class_name: 'Franklin::Unit', optional: true
 		belongs_to :user, optional: true
 
 		has_many 	:observations, as: :observed, dependent: :destroy
@@ -54,7 +54,9 @@ module Franklin
 		end
 
 		def base_unit
-			self.unit.try( :base_unit )
+			unit = self.default_unit.try( :base_unit )
+			unit ||= self.default_unit
+			return unit
 		end
 
 
@@ -71,20 +73,20 @@ module Franklin
 			end
 			range = start_date..Time.zone.now
 
-			same_type_unit_ids = Unit.where( unit_type: Unit.unit_types[self.unit.unit_type] ).pluck( :id )
+			same_type_unit_ids = Unit.where( unit_type: Unit.unit_types[self.default_unit.unit_type] ).pluck( :id )
 
 			if self.default_value_type == 'max_value'
-				value = self.observations.nonsubs.where( unit_id: same_type_unit_ids ).where( recorded_at: range ).maximum( :value )
+				value = self.observations.nonsubs.where( default_unit_id: same_type_unit_ids ).where( recorded_at: range ).maximum( :value )
 			elsif self.default_value_type == 'min_value'
-				value = self.observations.nonsubs.where( unit_id: same_type_unit_ids ).where( recorded_at: range ).minimum( :value )
+				value = self.observations.nonsubs.where( default_unit_id: same_type_unit_ids ).where( recorded_at: range ).minimum( :value )
 			elsif self.default_value_type == 'avg_value'
-				value = self.observations.nonsubs.where( unit_id: same_type_unit_ids ).where( recorded_at: range ).average( :value )
+				value = self.observations.nonsubs.where( default_unit_id: same_type_unit_ids ).where( recorded_at: range ).average( :value )
 			elsif self.default_value_type == 'current_value'
-				value = self.observations.nonsubs.where( unit_id: same_type_unit_ids ).where( recorded_at: range ).order( recorded_at: :desc ).first.try( :value )
+				value = self.observations.nonsubs.where( default_unit_id: same_type_unit_ids ).where( recorded_at: range ).order( recorded_at: :desc ).first.try( :value )
 			elsif self.default_value_type == 'count'
 				value = self.observations.nonsubs.where( recorded_at: range ).count
 			else # sum_value -- aggregate
-				value = self.observations.nonsubs.where( unit_id: same_type_unit_ids ).where( recorded_at: range ).sum( :value )
+				value = self.observations.nonsubs.where( default_unit_id: same_type_unit_ids ).where( recorded_at: range ).sum( :value )
 			end
 
 			# special hack for blood pressure
@@ -95,8 +97,9 @@ module Franklin
 				return "#{value}/#{sub_value} mmHg"
 			end
 
-			if args[:convert] && self.unit.present?
-				return self.unit.convert_from_base( value )
+			if args[:convert] && self.default_unit.present?
+				return " TODO "
+				#return self.unit.convert_from_base( value )
 			else
 				return value
 			end

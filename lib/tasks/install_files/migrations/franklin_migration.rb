@@ -30,7 +30,7 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 		create_table :franklin_metrics do |t|
 			t.string			:title
 			t.references 		:category
-			t.references 		:unit
+			t.references 		:default_unit
 			t.references 		:user
 			t.string   			:slug
 			t.text     			:aliases,            default: [],         array: true
@@ -45,7 +45,7 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
 		create_table :franklin_observations do |t|
 			t.string   			:tmp_id
 			t.references  		:observed, polymorphic: true
-			t.references 		:unit
+			t.references 		:recorded_unit
 			t.references 		:user
 			t.references 		:parent
 			t.integer  			:lft
