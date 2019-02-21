@@ -1,14 +1,19 @@
 = form_for Franklin::Observation.new do |f|
+	.row
+		.col-sm-4
+			.form-group
+				= f.label :metric_alias, 'Metric'
+				= f.text_field :metric_alias, class: 'form-control'
+		.col-sm-2
+			%center
+				%h2{ style: 'margin-top: 1em;' }
+					Is
 
-	.form-group
-		= f.label :metric_alias, 'Metric'
-		= f.text_field :metric_alias
-
-	Is
-
-	.form-group
-		= f.label :value
-		= f.text_field :value, class: 'form-control'
-
-	.form-group
-		= f.submit 'Enter', class: 'btn btn-md'
+		.col-sm-4
+			.form-group
+				= f.label :value
+				= f.text_field :value, class: 'form-control'
+	.row
+		.col
+		.form-group
+			= f.submit 'Enter', class: 'btn btn-md btn-primary'

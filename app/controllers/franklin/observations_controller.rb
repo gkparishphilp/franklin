@@ -1,5 +1,5 @@
 module Franklin
-	class ObservationsController < ApplicationController
+	class ObservationsController < ApplicationAdminController
 
 		def create
 			@observation = Observation.new( user: current_user, content: params[:observation][:content] )
@@ -43,7 +43,7 @@ module Franklin
 		end
 
 		def new
-			@observations = current_user.observations.order( created_at: :desc ).page( params[:page ])
+			@observations = Observation.where( user_id: current_user.id ).order( created_at: :desc ).page( params[:page ])
 		end
 
 

@@ -61,7 +61,7 @@ module Franklin
 			#elsif self.sub.present?
 			#	"#{ConversionService.new( obs: self ).convert( opts )} and #{ConversionService.new( obs: self.self ).convert( opts )}"
 			else
-				ConversionService.new( obs: self ).convert( opts )
+				ConversionService.new( v: self.value, from: self.recorded_unit, to: self.base_unit ).convert( opts )
 			end
 		end
 

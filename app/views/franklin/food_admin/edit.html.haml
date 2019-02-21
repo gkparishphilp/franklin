@@ -74,7 +74,7 @@
 							%td
 								%strong
 									= ( nutrient.amount * nutrient.food.serving_amount ).round( 2 )
-									= nutrient.metric.unit.abbrev
+									= nutrient.metric.default_unit.abbrev
 							%td
 								%a.btn.btn-sm.btn-danger{ href: nutrient_admin_path( nutrient ), data: { method: :delete } }
 									%i.fa.fa-trash

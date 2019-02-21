@@ -134,7 +134,7 @@ namespace :franklin do
 		mgdl = Franklin::Unit.find_by_alias 'mgdl'
 		per = Franklin::Unit.find_by_alias '%'
 		bmi = Franklin::Unit.find_by_alias 'bmi'
-		celcius = Franklin::Unit.find_by_alias 'celcius'
+		celcius = Franklin::Unit.find_by_alias 'c'
 		cal = Franklin::Unit.find_by_alias 'cal'
 		block = Franklin::Unit.find_by_alias 'block'
 		g = Franklin::Unit.find_by_alias 'g'
@@ -152,7 +152,10 @@ namespace :franklin do
 		hps = Franklin::Metric.create title: 'Hips', default_value_type: 'current_value', aliases: ['hip'], default_unit: cm
 		hps.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
-		rhr = Franklin::Metric.create title: 'Resting Heart Rate', default_value_type: 'current_value', aliases: ['pulse', 'heart rate', 'rhr'], default_unit: bpm
+		pulse = Franklin::Metric.create title: 'Pulse', default_value_type: 'current_value', aliases: ['pulse', 'heart rate', 'hr'], default_unit: bpm
+		rhr.targets.create target_type: :current_value, direction: :at_most, period: :all_time
+
+		rhr = Franklin::Metric.create title: 'Resting Heart Rate', default_value_type: 'current_value', aliases: ['rhr'], default_unit: bpm
 		rhr.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
 		
@@ -172,7 +175,7 @@ namespace :franklin do
 		bmi = Franklin::Metric.create title: 'Body Mass Index', default_value_type: 'current_value', aliases: ['bmi'], default_unit: bmi
 		bmi.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
-		temp = Franklin::Metric.create title: 'Body Temperature', default_value_type: 'current_value', aliases: ['temp', 'temperature'], default_unit: celcius
+		temp = Franklin::Metric.create title: 'Body Temperature', default_value_type: 'current_value', aliases: ['temp', 'temperature', 'body temp'], default_unit: celcius
 		#bmi.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
 		md = Franklin::Metric.create title: 'Mood', default_value_type: 'avg_value', aliases: [ 'feeling', 'happiness' ], default_unit: per, default_period: 'day'

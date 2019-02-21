@@ -28,8 +28,8 @@
 							= f.text_field :value, class: 'form-control'
 					.col-sm-4
 						.form-group
-							= f.label :unit_id, 'Unit'
-							= f.collection_select :unit_id, @units, :id, :name, {}, class: 'form-control'
+							= f.label :recorded_unit_id, 'Recorded Unit'
+							= f.collection_select :recorded_unit_id, @units, :id, :name, {}, class: 'form-control'
 				.row
 
 					.form-group

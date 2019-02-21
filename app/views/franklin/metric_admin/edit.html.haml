@@ -69,26 +69,26 @@
 								%td
 									%b Max
 								%td
-									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.maximum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.maximum( :value ), from: @metric.base_unit, to: @metric.default_unit, display: true ).convert
 
-									=# Franklin::ConversionService.new( val: @metric.observations.nonsubs.where( unit_id: @metric.unit_id ).maximum( :value ), from: @metric.unit.base_unit, to: @metric.unit ).convert
+									=# Franklin::ConversionService.new( val: @metric.observations.nonsubs.where( unit_id: @metric.unit_id ).maximum( :value ), from: @metric.base_unit, to: @metric.unit ).convert
 									
 							%tr
 								%td
 									%b Min
 								%td
-									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.minimum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.minimum( :value ), from: @metric.base_unit, to: @metric.default_unit, display: true ).convert
 							
 							%tr
 								%td
 									%b Total
 								%td
-									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.sum( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.sum( :value ), from: @metric.base_unit, to: @metric.default_unit, display: true ).convert
 							%tr
 								%td
 									%b Avg
 								%td
-									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.average( :value ), from: @metric.unit.base_unit, to: @metric.unit, display: true ).convert
+									= Franklin::ConversionService.new( val: @metric.observations.nonsubs.average( :value ), from: @metric.base_unit, to: @metric.default_unit, display: true ).convert
 
 
 					%h5
@@ -134,8 +134,11 @@
 						= @metric.user || 'System'
 
 					.form-group
-						= f.label :unit_id, 'Default Unit'
-						= f.select :unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, { include_blank: '-- None --' }, class: 'form-control'
+						= f.label :default_unit_id, 'Default Unit'
+						= f.select :default_unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, { include_blank: '-- None --' }, class: 'form-control'
+					.form-group
+						= f.label 'Base Unit'
+						= @metric.base_unit
 					
 					.form-group
 						= f.label :default_value_type

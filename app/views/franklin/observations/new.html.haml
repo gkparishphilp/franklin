@@ -19,7 +19,10 @@
 					Title
 
 				%th
-					User
+					Metric
+
+				%th
+					Metric Default unit
 
 				%th
 					Stored Value
@@ -28,7 +31,7 @@
 					Stored Unit
 
 				%th
-					Converted Value
+					Display Value
 
 				%th
 					Observation Unit
@@ -45,10 +48,9 @@
 							%a{ href: edit_observation_admin_path( observation ) }
 								= observation.to_s
 						%td
-							- if observation.user_id.present?
-								= User.find( observation.user_id )
-							- else
-								System
+							= observation.observed
+						%td
+							= observation.observed.try( :default_unit )
 						%td
 							= observation.value
 						%td
