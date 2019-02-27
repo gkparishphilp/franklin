@@ -153,7 +153,7 @@ namespace :franklin do
 		hps.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
 		pulse = Franklin::Metric.create title: 'Pulse', default_value_type: 'current_value', aliases: ['pulse', 'heart rate', 'hr'], default_unit: bpm
-		rhr.targets.create target_type: :current_value, direction: :at_most, period: :all_time
+		pulse.targets.create target_type: :current_value, direction: :at_most, period: :all_time
 
 		rhr = Franklin::Metric.create title: 'Resting Heart Rate', default_value_type: 'current_value', aliases: ['rhr'], default_unit: bpm
 		rhr.targets.create target_type: :current_value, direction: :at_most, period: :all_time
