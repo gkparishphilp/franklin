@@ -67,56 +67,57 @@ namespace :franklin do
 
 		mgdl = Franklin::Unit.create name: 'Parts per Million', abbrev: 'ppm', unit_type: 'concentration'
 		mgdl = Franklin::Unit.create name: 'mg/dL', abbrev: 'mg/dL', aliases: ['mgdL'], unit_type: 'concentration'
-		mmoll = Franklin::Unit.create name: 'mmol/L', abbrev: 'mmol/L', aliases: ['mmolL'], unit_type: 'concentration', base_unit: mgdl, conversion_factor: 18
+		mmoll = Franklin::Unit.create name: 'mmol/L', abbrev: 'mmol/L', aliases: ['mmolL'], unit_type: 'concentration', convert_to_unit: mgdl, conversion_factor: 18
 
 		bmi = Franklin::Unit.create name: 'Bodymass Index', abbrev: 'bmi', unit_type: 'custom'
 		block = Franklin::Unit.create name: 'Block', abbrev: 'block', unit_type: 'custom'
 
 		celcius = Franklin::Unit.create name: 'Degrees Celcius', abbrev: 'celcius', aliases: ['c', 'cel'], unit_type: 'temperature', imperial: false
-		f = Franklin::Unit.create name: 'Degrees Farenheit', abbrev: 'degrees', aliases: ['f', 'degs'], unit_type: 'temperature', base_unit: celcius, conversion_factor: 5/9.to_f
+		f = Franklin::Unit.create name: 'Degrees Farenheit', abbrev: 'degrees', aliases: ['f', 'degs'], unit_type: 'temperature', convert_to_unit: celcius, conversion_factor: 5/9.to_f
 		celcius.update( imperial_correlate_id: f.id )
 
 		mmhg = Franklin::Unit.create name: 'Millimeters Mercury', abbrev: 'mmHg', aliases: ['mmhg'], unit_type: 'pressure'
 		psi = Franklin::Unit.create name: 'Pounds Per Square Inch', abbrev: 'psi', unit_type: 'pressure'
 
 		cal = Franklin::Unit.create name: 'Calorie', abbrev: 'cal', aliases: ['kCal', 'calory'], unit_type: 'energy'
-		jl = Franklin::Unit.create name: 'Joule', abbrev: 'j', unit_type: 'energy', base_unit: cal, conversion_factor: 0.239006
+		jl = Franklin::Unit.create name: 'Joule', abbrev: 'j', unit_type: 'energy', convert_to_unit: cal, conversion_factor: 0.239006
 
 		g = Franklin::Unit.create name: 'Gram', abbrev: 'g', unit_type: 'weight', imperial: false
-		kg = Franklin::Unit.create name: 'Kilogram', abbrev: 'kg', aliases: ['kilo'], unit_type: 'weight', base_unit: g, conversion_factor: 1000, imperial: false
-		lb = Franklin::Unit.create name: 'Pound', abbrev: 'lb', aliases: ['#'], unit_type: 'weight', base_unit: g, conversion_factor: 453.592
-		oz = Franklin::Unit.create name: 'Ounce', abbrev: 'oz', aliases: ['oz'], unit_type: 'weight', base_unit: g, conversion_factor: 28.3495
+		mg = Franklin::Unit.create name: 'Milligram', abbrev: 'mg', unit_type: 'weight', imperial: false, convert_to_unit: g, conversion_factor: 0.01, imperial: false
+		kg = Franklin::Unit.create name: 'Kilogram', abbrev: 'kg', aliases: ['kilo'], unit_type: 'weight', convert_to_unit: g, conversion_factor: 1000, imperial: false
+		lb = Franklin::Unit.create name: 'Pound', abbrev: 'lb', aliases: ['#'], unit_type: 'weight', convert_to_unit: g, conversion_factor: 453.592
+		oz = Franklin::Unit.create name: 'Ounce', abbrev: 'oz', aliases: ['oz'], unit_type: 'weight', convert_to_unit: g, conversion_factor: 28.3495
 		g.update( imperial_correlate_id: oz.id )
 		kg.update( imperial_correlate_id: lb.id )
 
 		m = Franklin::Unit.create name: 'Meter', abbrev: 'm', unit_type: 'distance', imperial: false
-		cm = Franklin::Unit.create name: 'Centimeter', abbrev: 'cm', unit_type: 'distance', base_unit: m, conversion_factor: 0.01, imperial: false
-		mm = Franklin::Unit.create name: 'Millimeter', abbrev: 'mm', unit_type: 'distance', base_unit: m, conversion_factor: 0.001, imperial: false
-		km = Franklin::Unit.create name: 'Kilometer', abbrev: 'km', aliases: [ 'k' ], unit_type: 'distance', base_unit: m, conversion_factor: 1000, imperial: false
-		inch = Franklin::Unit.create name: 'Inch', abbrev: 'in', unit_type: 'distance', aliases: ['"'], base_unit: m, conversion_factor: 0.0254
-		ft = Franklin::Unit.create name: 'Foot', abbrev: 'ft', unit_type: 'distance', aliases: ["'"], base_unit: m, conversion_factor: 0.3048
-		yd = Franklin::Unit.create name: 'Yard', abbrev: 'yd', unit_type: 'distance', base_unit: m, conversion_factor: 0.9144
-		mi = Franklin::Unit.create name: 'Mile', abbrev: 'mi', unit_type: 'distance', base_unit: m, conversion_factor: 1609.344
+		cm = Franklin::Unit.create name: 'Centimeter', abbrev: 'cm', unit_type: 'distance', convert_to_unit: m, conversion_factor: 0.01, imperial: false
+		mm = Franklin::Unit.create name: 'Millimeter', abbrev: 'mm', unit_type: 'distance', convert_to_unit: m, conversion_factor: 0.001, imperial: false
+		km = Franklin::Unit.create name: 'Kilometer', abbrev: 'km', aliases: [ 'k' ], unit_type: 'distance', convert_to_unit: m, conversion_factor: 1000, imperial: false
+		inch = Franklin::Unit.create name: 'Inch', abbrev: 'in', unit_type: 'distance', aliases: ['"'], convert_to_unit: m, conversion_factor: 0.0254
+		ft = Franklin::Unit.create name: 'Foot', abbrev: 'ft', unit_type: 'distance', aliases: ["'"], convert_to_unit: m, conversion_factor: 0.3048
+		yd = Franklin::Unit.create name: 'Yard', abbrev: 'yd', unit_type: 'distance', convert_to_unit: m, conversion_factor: 0.9144
+		mi = Franklin::Unit.create name: 'Mile', abbrev: 'mi', unit_type: 'distance', convert_to_unit: m, conversion_factor: 1609.344
 		m.update( imperial_correlate_id: yd.id )
 		cm.update( imperial_correlate_id: inch.id )
 		mm.update( imperial_correlate_id: inch.id )
 		km.update( imperial_correlate_id: mi.id )
 
 		l = Franklin::Unit.create name: 'Liter', abbrev: 'l', unit_type: 'volume', imperial: false
-		ml = Franklin::Unit.create name: 'Milliliter', abbrev: 'ml', unit_type: 'volume', base_unit: l, conversion_factor: 0.001, imperial: false
-		cup = Franklin::Unit.create name: 'Cup', abbrev: 'cup', unit_type: 'volume', base_unit: l, conversion_factor: 0.24
-		gal = Franklin::Unit.create name: 'Gallon', abbrev: 'gal', unit_type: 'volume', base_unit: l, conversion_factor: 3.78541
-		qt = Franklin::Unit.create name: 'Quart', abbrev: 'qt', unit_type: 'volume', base_unit: l, conversion_factor: 0.946352499983857
-		pt = Franklin::Unit.create name: 'Pint', abbrev: 'pt', unit_type: 'volume', base_unit: l, conversion_factor: 0.47317624999192847701
-		floz = Franklin::Unit.create name: 'Fluid Ounce', abbrev: 'fl oz', unit_type: 'volume', base_unit: l, conversion_factor: 0.0295735
+		ml = Franklin::Unit.create name: 'Milliliter', abbrev: 'ml', unit_type: 'volume', convert_to_unit: l, conversion_factor: 0.001, imperial: false
+		cup = Franklin::Unit.create name: 'Cup', abbrev: 'cup', unit_type: 'volume', convert_to_unit: l, conversion_factor: 0.24
+		gal = Franklin::Unit.create name: 'Gallon', abbrev: 'gal', unit_type: 'volume', convert_to_unit: l, conversion_factor: 3.78541
+		qt = Franklin::Unit.create name: 'Quart', abbrev: 'qt', unit_type: 'volume', convert_to_unit: l, conversion_factor: 0.946352499983857
+		pt = Franklin::Unit.create name: 'Pint', abbrev: 'pt', unit_type: 'volume', convert_to_unit: l, conversion_factor: 0.47317624999192847701
+		floz = Franklin::Unit.create name: 'Fluid Ounce', abbrev: 'fl oz', unit_type: 'volume', convert_to_unit: l, conversion_factor: 0.0295735
 		l.update( imperial_correlate_id: gal.id )
 		ml.update( imperial_correlate_id: floz.id )
 
 		sec = Franklin::Unit.create name: 'Second', abbrev: 'sec', aliases: ['time', 'sec', ':'], unit_type: 'time'
-		min = Franklin::Unit.create name: 'Minute', abbrev: 'min', unit_type: 'time', base_unit: sec, conversion_factor: 60
-		hr = Franklin::Unit.create name: 'Hour', abbrev: 'hr', unit_type: 'time', base_unit: sec, conversion_factor: 3600
-		day = Franklin::Unit.create name: 'Day', abbrev: 'day', unit_type: 'time', base_unit: sec, conversion_factor: 86400
-		day = Franklin::Unit.create name: 'Week', abbrev: 'wk', unit_type: 'time', base_unit: sec, conversion_factor: 86400*7
+		min = Franklin::Unit.create name: 'Minute', abbrev: 'min', unit_type: 'time', convert_to_unit: sec, conversion_factor: 60
+		hr = Franklin::Unit.create name: 'Hour', abbrev: 'hr', unit_type: 'time', convert_to_unit: sec, conversion_factor: 3600
+		day = Franklin::Unit.create name: 'Day', abbrev: 'day', unit_type: 'time', convert_to_unit: sec, conversion_factor: 86400
+		day = Franklin::Unit.create name: 'Week', abbrev: 'wk', unit_type: 'time', convert_to_unit: sec, conversion_factor: 86400*7
 
 	end
 

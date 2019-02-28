@@ -82,11 +82,11 @@ class FranklinMigration < ActiveRecord::Migration[5.1]
     	end
 
     	create_table :franklin_units, force: :cascade do |t|
-			t.references 		:base_unit
+			t.references 		:convert_to_unit
 			t.references 		:imperial_correlate
 			t.references 		:user
 			t.references 		:metric
-			t.references		:custom_base_unit
+			t.references		:custom_convert_to_unit
 			t.float    			:conversion_factor,			default: 1.0
 			t.float    			:custom_conversion_factor,	default: 1.0
 			t.string   			:name

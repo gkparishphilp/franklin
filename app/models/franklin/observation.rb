@@ -45,9 +45,9 @@ module Franklin
 		end
 
 
-		def base_unit
-			unit = self.recorded_unit.try( :base_unit )
-			unit = self.observed.try( :base_unit )
+		def convert_to_unit
+			unit = self.observed.try( :convert_to_unit )
+			unit ||= self.recorded_unit.try( :convert_to_unit )
 			unit ||= self.recorded_unit
 			return unit
 		end

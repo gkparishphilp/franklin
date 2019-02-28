@@ -28,8 +28,8 @@
 				.row	
 					.col-sm-6
 						.form-group
-							= f.label :base_unit_id, "Base Unit"
-							= f.collection_select :base_unit_id, Franklin::Unit.where.not( id: @unit.id ).where( base_unit_id: nil ).order( :name ), :id, :name, { prompt: '-- None --' }, class: 'form-control'
+							= f.label :convert_to_unit_id, "Base Unit"
+							= f.collection_select :convert_to_unit_id, Franklin::Unit.where.not( id: @unit.id ).where( convert_to_unit_id: nil ).order( :name ), :id, :name, { prompt: '-- None --' }, class: 'form-control'
 					.col-sm-4
 						.form-group
 							= f.label :conversion_factor
