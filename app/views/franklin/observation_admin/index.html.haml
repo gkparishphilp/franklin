@@ -64,9 +64,9 @@
 						%td
 							= observation.value
 						%td
-							= observation.convert_to_unit
+							= observation.base_unit
 						%td
-							= Franklin::ConversionService.new( v: observation.value, from: observation.convert_to_unit, to: observation.recorded_unit ).convert
+							= Franklin::ConversionService.convert_from_base( observation )
 						%td
 							= observation.recorded_unit
 						

@@ -137,8 +137,8 @@
 						= f.label :default_unit_id, 'Default Unit'
 						= f.select :default_unit_id, Franklin::Unit.order( :name ).collect{ |u| [ u.name, u.id ] }, { include_blank: '-- None --' }, class: 'form-control'
 					.form-group
-						= f.label 'Convert to Unit'
-						= @metric.convert_to_unit
+						= f.label 'Base Unit'
+						= @metric.base_unit
 					
 					.form-group
 						= f.label :default_value_type

@@ -3,8 +3,8 @@ module Franklin
 		before_create	:set_aliases
 		enum unit_type: { 'custom' => 0, 'volume' => 10, 'weight' => 20, 'distance' => 30, 'time' => 40, 'percent' => 50, 'pressure' => 60, 'energy' => 70, 'temperature' => 80, 'rate' => 90, 'concentration' => 100, 'score' => 110 }
 		
-		belongs_to :convert_to_unit, class_name: 'Unit', optional: true
-		belongs_to :custom_convert_to_unit, class_name: 'Unit', optional: true
+		belongs_to :base_unit, class_name: 'Unit', optional: true
+		belongs_to :custom_base_unit, class_name: 'Unit', optional: true
 
 		# the imperial correlate maps metric units to their imperial counter-parts.
 		# e.g. kg correlates to lb (not oz), cm correlates to in, etc....
@@ -18,7 +18,7 @@ module Franklin
 		attr_accessor :custom_base_unit_name
 
 		def self.base
-			where( convert_to_unit_id: nil )
+			where( base_unit_id: nil )
 		end
 
 		def self.find_by_alias( term )
@@ -42,7 +42,7 @@ module Franklin
 		end
 
 		def is_base?
-			self.convert_to_unit_id.nil?
+			self.base_unit_id.nil?
 		end
 
 		def is_sytem?

@@ -46,7 +46,7 @@ module Franklin
 			end
 
 			def unit_params
-				params.require( :unit ).permit( :name, :user_id, :abbrev, :convert_to_unit_id, :conversion_factor, :imperial_correlate_id, :aliases_csv, :imperial )
+				params.require( :unit ).permit( :name, :user_id, :abbrev, :base_unit_id, :conversion_factor, :imperial_correlate_id, :aliases_csv, :imperial )
 			end
 
 	end

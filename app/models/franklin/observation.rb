@@ -45,9 +45,9 @@ module Franklin
 		end
 
 
-		def convert_to_unit
-			unit = self.observed.try( :convert_to_unit )
-			unit ||= self.recorded_unit.try( :convert_to_unit )
+		def base_unit
+			unit = self.observed.try( :base_unit )
+			unit ||= self.recorded_unit.try( :base_unit )
 			unit ||= self.recorded_unit
 			return unit
 		end
@@ -61,7 +61,7 @@ module Franklin
 			#elsif self.sub.present?
 			#	"#{ConversionService.new( obs: self ).convert( opts )} and #{ConversionService.new( obs: self.self ).convert( opts )}"
 			else
-				ConversionService.new( v: self.value, from: self.recorded_unit, to: self.base_unit ).convert( opts )
+				ConversionService.convert_from_base( self, opts )
 			end
 		end
 

@@ -53,8 +53,8 @@ module Franklin
 			self.aliases = aliases_csv.split( /,\s*/ )
 		end
 
-		def convert_to_unit
-			unit = self.default_unit.try( :convert_to_unit )
+		def base_unit
+			unit = self.default_unit.try( :base_unit )
 			unit ||= self.default_unit
 			return unit
 		end

@@ -15,6 +15,7 @@ module Franklin
 			end
 
 			if params[:observation][:value].match( /:|hour|minute|sec/ )
+				# if metric.default_unit == hour && only one :, add a second colon cause chronic assumes 7:43 is minutes
 				@observation.recorded_unit ||= Unit.time.first
 			elsif params[:observation][:value].match( /%/ )
 				@observation.recorded_unit ||= Unit.percent.first
@@ -30,7 +31,7 @@ module Franklin
 			end
 
 			if @observation.recorded_unit.present?
-				@observation.value = Franklin::ConversionService.new( value: params[:observation][:value], from: @observation.recorded_unit, to: @observation.base_unit ).convert
+				@observation.value = Franklin::ConversionService.convert_to_base( @observation, value: params[:observation][:value] )
 			else
 				@observation.value = params[:observation][:value].to_f
 			end
