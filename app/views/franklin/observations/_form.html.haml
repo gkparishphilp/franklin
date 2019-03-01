@@ -14,6 +14,11 @@
 				= f.label :value
 				= f.text_field :value, class: 'form-control'
 	.row
+		.col-sm-10.offset-sm-1
+			.form-group
+				= f.label :notes
+				= f.text_area :notes, class: 'form-control'
+	.row
 		.col
 		.form-group
 			= f.submit 'Enter', class: 'btn btn-md btn-primary'

@@ -21,7 +21,7 @@
 					.col-sm-4
 						.form_group
 							= f.label :observed_id
-							= f.collection_select :observed_id, @metrics, :id, :title, {}, class: 'form-control'
+							= f.collection_select :observed_id, @metrics, :id, :title, { include_blank: '-- None --' }, class: 'form-control'
 					.col-sm-4
 						.form-group
 							= f.label :value
@@ -29,7 +29,7 @@
 					.col-sm-4
 						.form-group
 							= f.label :recorded_unit_id, 'Recorded Unit'
-							= f.collection_select :recorded_unit_id, @units, :id, :name, {}, class: 'form-control'
+							= f.collection_select :recorded_unit_id, @units, :id, :name, { include_blank: '-- None --' }, class: 'form-control'
 				.row
 
 					.form-group

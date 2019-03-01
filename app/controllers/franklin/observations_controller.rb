@@ -2,7 +2,7 @@ module Franklin
 	class ObservationsController < ApplicationAdminController
 
 		def create
-			@observation = Observation.new( user: current_user, content: params[:observation][:content] )
+			@observation = Observation.new( user: current_user, notes: params[:observation][:notes] )
 
 			system_metric = Metric.find_by_alias( params[:observation][:metric_alias] )
 			if system_metric.present?
@@ -52,7 +52,7 @@ module Franklin
 		private
 
 			def observation_params
-				params.require( :observation ).permit( :content, :value, :metric_alias, :unit_id, :unit_alias )
+				params.require( :observation ).permit( :notes, :value, :metric_alias, :unit_id, :unit_alias )
 			end
 	end
 end

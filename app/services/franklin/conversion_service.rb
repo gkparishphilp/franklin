@@ -10,6 +10,8 @@ module Franklin
 			time_format = opts[:time_format] || :long 
 			precision = opts[:precision] || 2
 
+			return observation.value if observation.recorded_unit.nil?
+
 			if observation.recorded_unit.time?
 				return ChronicDuration.output( observation.value, format: time_format )
 			elsif observation.recorded_unit.percent?
@@ -62,6 +64,7 @@ module Franklin
 		
 
 		def self.convert( val, opts={} )
+
 			from_unit ||= opts[:from_unit] || opts[:from]
 			if from_unit.is_a?( String )
 				from_unit = Unit.system.find_by_alias( from_unit.singularize.downcase )
@@ -72,6 +75,16 @@ module Franklin
 			if to_unit.is_a?( String )
 				to_unit = Unit.system.find_by_alias( @o_unit.singularize.downcase )
 			end
+
+			if from_unit.nil? || to_unit.nil?
+				raise "Can't convert to/from nil units"
+			end
+
+			if not( from_unit.unit_type == to_unit.unit_type )
+				raise "Can't convert between incompatible unit types"
+			end
+
+
 
 			if to_unit.try( :is_base? )
 				conversion_factor ||= from_unit.try( :conversion_factor )
