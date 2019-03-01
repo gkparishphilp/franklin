@@ -56,18 +56,18 @@ namespace :franklin do
 		puts "Adding some New Units"
 
 
-		point = Franklin::Unit.create name: 'Point', abbrev: 'pt', unit_type: 'score'
+		point = Franklin::Unit.create name: 'Point', abbrev: '', unit_type: 'score'
 		round = Franklin::Unit.create name: 'Round', abbrev: 'rd', unit_type: 'score'
 		rep = Franklin::Unit.create name: 'Rep', abbrev: 'rep', unit_type: 'score'
 		score = Franklin::Unit.create name: 'Score', unit_type: 'score'
 
-		bpm = Franklin::Unit.create name: 'BPM', abbrev: 'bpm', aliases: ['heart rate'], unit_type: 'rate'
+		bpm = Franklin::Unit.create name: 'BPM', abbrev: 'bpm', unit_type: 'rate'
 
 		percent = Franklin::Unit.create name: 'Percent', abbrev: '%', unit_type: 'percent'
 
-		mgdl = Franklin::Unit.create name: 'Parts per Million', abbrev: 'ppm', unit_type: 'concentration'
-		mgdl = Franklin::Unit.create name: 'mg/dL', abbrev: 'mg/dL', aliases: ['mgdL'], unit_type: 'concentration'
-		mmoll = Franklin::Unit.create name: 'mmol/L', abbrev: 'mmol/L', aliases: ['mmolL'], unit_type: 'concentration', base_unit: mgdl, conversion_factor: 18
+		ppm = Franklin::Unit.create name: 'Parts per Million', abbrev: 'ppm', unit_type: 'concentration'
+		mgdl = Franklin::Unit.create name: 'mg/dL', abbrev: 'mg/dL', aliases: ['mgdL'], unit_type: 'concentration', base_unit: ppm, conversion_factor: 10
+		mmoll = Franklin::Unit.create name: 'mmol/L', abbrev: 'mmol/L', aliases: ['mmolL'], unit_type: 'concentration', base_unit: ppm, conversion_factor: 180
 
 		bmi = Franklin::Unit.create name: 'Bodymass Index', abbrev: 'bmi', unit_type: 'custom'
 		block = Franklin::Unit.create name: 'Block', abbrev: 'block', unit_type: 'custom'
@@ -114,10 +114,12 @@ namespace :franklin do
 		ml.update( imperial_correlate_id: floz.id )
 
 		sec = Franklin::Unit.create name: 'Second', abbrev: 'sec', aliases: ['time', 'sec', ':'], unit_type: 'time'
+		ms = Franklin::Unit.create name: 'Millisecond', abbrev: 'ms', unit_type: 'time', base_unit: sec, conversion_factor: 0.001
 		min = Franklin::Unit.create name: 'Minute', abbrev: 'min', unit_type: 'time', base_unit: sec, conversion_factor: 60
 		hr = Franklin::Unit.create name: 'Hour', abbrev: 'hr', unit_type: 'time', base_unit: sec, conversion_factor: 3600
 		day = Franklin::Unit.create name: 'Day', abbrev: 'day', unit_type: 'time', base_unit: sec, conversion_factor: 86400
-		day = Franklin::Unit.create name: 'Week', abbrev: 'wk', unit_type: 'time', base_unit: sec, conversion_factor: 86400*7
+		wk = Franklin::Unit.create name: 'Week', abbrev: 'wk', unit_type: 'time', base_unit: sec, conversion_factor: 86400*7
+		mo = Franklin::Unit.create name: 'Month', abbrev: 'mnth', unit_type: 'time', base_unit: sec, conversion_factor: 86400*30
 
 	end
 
@@ -139,7 +141,9 @@ namespace :franklin do
 		cal = Franklin::Unit.find_by_alias 'cal'
 		block = Franklin::Unit.find_by_alias 'block'
 		g = Franklin::Unit.find_by_alias 'g'
-		sec = Franklin::Unit.find_by_alias 'time'
+		sec = Franklin::Unit.find_by_alias 'sec'
+		min = Franklin::Unit.find_by_alias 'min'
+		hr = Franklin::Unit.find_by_alias 'hr'
 		ml = Franklin::Unit.find_by_alias 'ml'
 		rep = Franklin::Unit.find_by_alias 'rep'
 		score = Franklin::Unit.find_by_alias 'score'
@@ -228,31 +232,31 @@ namespace :franklin do
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 120
 
 
-		act = Franklin::Metric.create title: 'Sleep', default_value_type: 'sum_value', 	aliases: ['slp', 'sleeping', 'slept', 'nap', 'napping', 'napped'], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Sleep', default_value_type: 'sum_value', 	aliases: ['slp', 'sleeping', 'slept', 'nap', 'napping', 'napped'], default_unit: hr, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 28800
 
-		act = Franklin::Metric.create title: 'Meditation', default_value_type: 'sum_value', aliases: ['med', 'meditating', 'meditated'], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Meditation', default_value_type: 'sum_value', aliases: ['med', 'meditating', 'meditated'], default_unit: min, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 1200
 
 		act = Franklin::Metric.create title: 'Steps', default_value_type: 'sum_value', aliases: ['step', 'stp', 'stepped' ], default_unit: rep, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 10000
 
-		act = Franklin::Metric.create title: 'Drive', default_value_type: 'sum_value', 	aliases: ['drv', 'driving', 'drove'], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Drive', default_value_type: 'sum_value', 	aliases: ['drv', 'driving', 'drove'], default_unit: min, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 7200
-		act = Franklin::Metric.create title: 'Cook', default_value_type: 'sum_value', 	aliases: ['cooking', 'cooked'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Cook', default_value_type: 'sum_value', 	aliases: ['cooking', 'cooked'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 25200
-		act = Franklin::Metric.create title: 'Clean', default_value_type: 'sum_value', 	aliases: ['cln', 'cleaning', 'cleaned'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Clean', default_value_type: 'sum_value', 	aliases: ['cln', 'cleaning', 'cleaned'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 7200
 
-		act = Franklin::Metric.create title: 'Work', default_value_type: 'sum_value', 	aliases: ['wrk', 'working', 'worked'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Work', default_value_type: 'sum_value', 	aliases: ['wrk', 'working', 'worked'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 144000
-		act = Franklin::Metric.create title: 'Walk', default_value_type: 'sum_value', 	aliases: ['wlk', 'walking', 'walked'], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Walk', default_value_type: 'sum_value', 	aliases: ['wlk', 'walking', 'walked'], default_unit: min, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 7200
-		act = Franklin::Metric.create title: 'Cycle', default_value_type: 'sum_value', aliases: ['cycling', 'cycled', 'bike', 'biked', 'biking', 'bicycling', 'bicycled', 'bicycle' ], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Cycle', default_value_type: 'sum_value', aliases: ['cycling', 'cycled', 'bike', 'biked', 'biking', 'bicycling', 'bicycled', 'bicycle' ], default_unit: min, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 3600
-		act = Franklin::Metric.create title: 'Swim', default_value_type: 'sum_value', aliases: ['swimming', 'swam'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Swim', default_value_type: 'sum_value', aliases: ['swimming', 'swam'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 3600
-		act = Franklin::Metric.create title: 'Run', default_value_type: 'sum_value', aliases: ['running', 'ran', 'jog', 'jogging', 'jogged'], default_unit: sec, default_period: 'day'
+		act = Franklin::Metric.create title: 'Run', default_value_type: 'sum_value', aliases: ['running', 'ran', 'jog', 'jogging', 'jogged'], default_unit: min, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 3600
 
 
@@ -275,14 +279,14 @@ namespace :franklin do
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 10
 		
 		
-		act = Franklin::Metric.create title: 'Watch TV', default_value_type: 'sum_value', aliases: ['tv', 'screen time', 'watch video', 'wathed tv', 'watched', 'watching', 'watched video', 'watching video', 'watching tv'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Watch TV', default_value_type: 'sum_value', aliases: ['tv', 'screen time', 'watch video', 'wathed tv', 'watched', 'watching', 'watched video', 'watching video', 'watching tv'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 3600
 
-		act = Franklin::Metric.create title: 'Video Game', default_value_type: 'sum_value', aliases: ['play video game', 'computer game', 'play xbox', 'xbox', 'play playstation', 'playstation', 'nintentndo', 'play nintendo', 'play on phone'], default_unit: sec, default_period: 'week'
+		act = Franklin::Metric.create title: 'Video Game', default_value_type: 'sum_value', aliases: ['play video game', 'computer game', 'play xbox', 'xbox', 'play playstation', 'playstation', 'nintentndo', 'play nintendo', 'play on phone'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 3600
 
 
-		wkt = Franklin::Metric.create title: 'Workout', default_value_type: 'sum_value', aliases: ['wkout', 'worked out', 'exercise', 'exercised', 'work out', 'working out', 'exercising'], default_unit: sec, default_period: 'week'
+		wkt = Franklin::Metric.create title: 'Workout', default_value_type: 'sum_value', aliases: ['wkout', 'worked out', 'exercise', 'exercised', 'work out', 'working out', 'exercising'], default_unit: min, default_period: 'week'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :week, value: 10800
 
 		wod = Franklin::Metric.create title: 'WoD', default_value_type: 'count', aliases: ['workout of the day', 'crossfit', 'cross fit'], default_unit: sec, default_period: 'week'

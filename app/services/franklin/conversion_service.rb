@@ -65,6 +65,8 @@ module Franklin
 
 		def self.convert( val, opts={} )
 
+			precision = opts[:precision] || 16
+
 			from_unit ||= opts[:from_unit] || opts[:from]
 			if from_unit.is_a?( String )
 				from_unit = Unit.system.find_by_alias( from_unit.singularize.downcase )
@@ -73,7 +75,7 @@ module Franklin
 			to_unit ||= opts[:to_unit] || opts[:to]
 			# to_unit ||= from_unit.try( :base_unit )
 			if to_unit.is_a?( String )
-				to_unit = Unit.system.find_by_alias( @o_unit.singularize.downcase )
+				to_unit = Unit.system.find_by_alias( to_unit.singularize.downcase )
 			end
 
 			if from_unit.nil? || to_unit.nil?
@@ -84,16 +86,17 @@ module Franklin
 				raise "Can't convert between incompatible unit types"
 			end
 
-
-
-			if to_unit.try( :is_base? )
-				conversion_factor ||= from_unit.try( :conversion_factor )
-			elsif from_unit.try( :is_base? )
-				conversion_factor ||= to_unit.try( :conversion_factor )
+			if to_unit.is_base?
+				return ( val * from_unit.conversion_factor.to_f ).round( precision )
+			elsif from_unit.is_base?
+				return ( val / to_unit.conversion_factor.to_f ).round( precision )
 			else
-				conversion_factor ||= from_unit.try( :conversion_factor )
+				# go through intermediary
+				base_unit = from_unit.base_unit
+				intermediary = ( val * from_unit.conversion_factor.to_f ).round( precision )
+				return ( intermediary / to_unit.conversion_factor.to_f ).round( precision )
 			end
-			conversion_factor ||= 1
+				
 
 		end
 
