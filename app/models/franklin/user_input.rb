@@ -9,7 +9,7 @@ module Franklin
 
 
 
-		def process!
+		def parse!
 
 			# for simplicity, just strip leading record or log
 			str = self.content.gsub( /\A(record|log|my|i)/, '' ).strip

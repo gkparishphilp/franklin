@@ -8,7 +8,7 @@ module Franklin
 
 			@input.save
 
-			@input.process!
+			@input.parse!
 
 			redirect_back fallback_location: user_inputs_path
 		end
