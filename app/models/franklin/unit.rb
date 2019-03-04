@@ -22,9 +22,25 @@ module Franklin
 		end
 
 		def self.find_by_alias( term )
-			term = term.strip.singularize
-			term = term.parameterize if term.present? && term.length > 1
+			term = term.try( :strip ).try( :singularize ).try( :parameterize )
 			where( ":term = ANY( aliases )", term: term ).first
+		end
+
+		def self.parse_string( str )
+			# takes a string and parses it for a value and unit
+			# returns two elements....
+			# the unit, then the value. So used as:
+			# str = '153.13lbs'
+			# myunit, myvalue = Unit.parse_string( str )
+			# myunit == 'lbs'
+			# myvalue == 153.13
+
+			value = str.match( /([\d.:&\/ and]+)/ )[0]
+
+			unit = str.delete( value )
+
+			return unit, value
+			
 		end
 
 		def self.system

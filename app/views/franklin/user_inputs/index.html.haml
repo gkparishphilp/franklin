@@ -3,10 +3,14 @@
 	.row
 		.col-sm-12
 			= form_for Franklin::UserInput.new do |f|
-				.form_group
-					= f.text_field :content
-				.form_group
-					= f.submit 'Enter', class: 'btn btn-md'
+
+				.row
+					.col
+						.form_group
+							= f.text_field :content, class: 'form-control'
+					.col
+						.form_group
+							= f.submit 'Enter', class: 'btn btn-md btn-black form-control'
 
 
 
@@ -36,12 +40,12 @@
 
 							= input.user
 							said: 
-							= "'#{input.content}'"
+							= raw "'#{input.content}'"
 							from
 							= input.source
 							.response{ style: 'margin-left:2em;margin-top:1em;' }
 								I:
-								= input.system_notes
+								= raw input.system_notes
 						%td
 							.time-ago
 								%i.fa.fa-clock-o

@@ -1,12 +1,11 @@
 module Franklin
-	class UserInputsController < ApplicationController
+	class UserInputsController < ApplicationAdminController
 
 
 		def create
 			@input = UserInput.new( user_input_params )
 			@input.user = current_user
-
-			@input.save
+			@input.source = "#{controller_name}##{action_name}"
 
 			@input.parse!
 
@@ -14,7 +13,7 @@ module Franklin
 		end
 
 		def index
-			@inputs = current_user.user_inputs
+			@inputs = UserInput.where( user: current_user ).order( created_at: :desc )
 		end
 
 

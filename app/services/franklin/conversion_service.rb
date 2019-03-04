@@ -44,8 +44,7 @@ module Franklin
 		def self.convert_to_base( observation, opts={} )
 			value = observation.value || opts[:value] || opts[:amount] || opts[:val] || opts[:v]
 
-
-			if observation.recorded_unit.time?
+			if observation.recorded_unit.try( :time? ) || observation.base_unit.try( :time? )
 				if not( value.strip.match( /\D+/ ) )
 					value = "#{value} #{observation.recorded_unit.name}"
 				end
@@ -54,7 +53,7 @@ module Franklin
 				return value.to_f / 100
 			elsif observation.recorded_unit.temperature? && observation.base_unit.present?
 				return (value.to_f - 32.0) * observation.recorded_unit.conversion_factor
-			elsif observation.base_unit.present?
+			elsif observation.base_unit.present? && observation.recorded_unit.present?
 				return value.to_f * observation.recorded_unit.conversion_factor
 			else
 				return value.to_f
