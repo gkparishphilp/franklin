@@ -24,7 +24,8 @@ module Franklin
 
 		def self.find_by_alias( term )
 			return false if term.blank?
-			where( ":term = ANY( aliases )", term: term.parameterize ).first
+			term = term.try( :strip ).try( :singularize ).try( :parameterize )
+			where( ":term = ANY( aliases )", term: term ).first
 		end
 
 		def self.default_value_types
@@ -36,6 +37,42 @@ module Franklin
 				'min_Value'			=> 'All-Time Low',
 				'sum_value' 		=> 'Accumulated'
 			}
+		end
+
+		def self.fetch_by_alias_for_user( str, user, opts={} )
+
+			# fetches a user's metric based on passed in string (matching metric title or aliases )
+			# creates a copy of asystem metric for the user if user hasn't used metric before
+			# may also create custom metrics if optional create == true
+
+			str = str.downcase
+
+			metric = Metric.where( user: user ).find_by_alias( str )
+			return metric if metric.present?
+
+			# also check the user's existing assigned metrics based on unit that if exists...
+			if opts[:unit].present? && Metric.where( user: user ).find_by_alias( opts[:unit] )
+				return Metric.where( user: user ).find_by_alias( opts[:unit] )
+			end
+
+
+			system_metric = Metric.system.find_by_alias( str )
+			if system_metric.present?
+				metric = system_metric.dup
+				metric.user = user
+				metric.default_unit = metric.default_unit.imperial_correlate if user.use_imperial_units? && metric.default_unit.imperial_correlate.present?
+				#metric.save
+			elsif opts[:create]
+				metric = Metric.new( user: user, title: str )
+			end
+
+			return metric
+			
+		end
+
+
+		def self.system
+			where( user_id: nil )
 		end
 
 

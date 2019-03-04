@@ -4,15 +4,7 @@ module Franklin
 		def create
 			@observation = Observation.new( user: current_user, notes: params[:observation][:notes] )
 
-			system_metric = Metric.find_by_alias( params[:observation][:metric_alias] )
-			if system_metric.present?
-				metric = system_metric.dup
-				metric.user = current_user
-				metric.default_unit = metric.default_unit.imperial_correlate if current_user.use_imperial_units? && metric.default_unit.imperial_correlate.present?
-				metric.save
-			else
-				metric = Metric.new( user: current_user, title: params[:observation][:metric_alias] )
-			end
+			metric = Metric.fetch_by_alias_for_user( params[:observation][:metric_alias], current_user )
 
 			if params[:observation][:value].match( /:|hour|minute|sec/ )
 				# if metric.default_unit == hour && only one :, add a second colon cause chronic assumes 7:43 is minutes

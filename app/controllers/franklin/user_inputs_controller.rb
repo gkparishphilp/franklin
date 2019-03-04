@@ -1,20 +1,19 @@
 module Franklin
-	class UserInputsController < ApplicationController
+	class UserInputsController < ApplicationAdminController
 
 
 		def create
 			@input = UserInput.new( user_input_params )
 			@input.user = current_user
+			@input.source = "#{controller_name}##{action_name}"
 
-			@input.save
-
-			@input.process!
+			@input.parse!
 
 			redirect_back fallback_location: user_inputs_path
 		end
 
 		def index
-			@inputs = current_user.user_inputs
+			@inputs = UserInput.where( user: current_user ).order( created_at: :desc )
 		end
 
 
