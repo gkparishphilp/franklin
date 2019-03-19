@@ -11,11 +11,17 @@ module Franklin
 					/is|=|was|were/ => 'metric_is_value' 
 				}
 
+		def metric_regex
+			metrics = Metric.where( user_id: nil ).or( Metric.where( user_id: self.user_id ) ).pluck( :aliases ).flatten.join( '|' )
+			/\s*(#{metrics})\s*/
+		end
 
-<<<<<<< HEAD
+		def quantity_regex
+			units = Unit.where( user_id: nil ).or( Unit.where( user_id: self.user_id ) ).pluck( :aliases ).flatten.join( '|' )
+			/(\d+\.?\d*)\s*(#{units})*/
+		end
 
-=======
->>>>>>> b7f20905023d3a3fc59751cab390751ab7cf58bc
+
 		def parse!
 
 			# for simplicity, just strip leading record or log

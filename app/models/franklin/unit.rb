@@ -134,11 +134,12 @@ module Franklin
 		private
 			def set_aliases
 				return false if self.name.blank? && self.abbrev.blank?
-				self.aliases << self.name.parameterize unless self.aliases.include?( self.name.parameterize ) 
-				self.aliases << self.abbrev unless ( self.aliases.include?( self.abbrev ) || self.abbrev.blank? )
+				#self.aliases << self.name.parameterize unless self.aliases.include?( self.name.parameterize ) 
+				self.aliases << self.name.downcase unless self.aliases.include?( self.name.downcase ) 
+				self.aliases << self.abbrev.downcase unless self.abbrev.blank? || ( self.aliases.include?( self.abbrev.downcase ) )
 				self.aliases.each_with_index do |value, index|
-					self.aliases[index] = value.parameterize if value.length > 1 unless value.blank?
-				end
+				 	self.aliases[index] = value.downcase if value.length > 1 unless value.blank?
+				 end
 				self.aliases = self.aliases.sort.reject{ |a| a.blank? }
 			end
 
