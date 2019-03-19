@@ -113,7 +113,7 @@ namespace :franklin do
 		l.update( imperial_correlate_id: gal.id )
 		ml.update( imperial_correlate_id: floz.id )
 
-		sec = Franklin::Unit.create name: 'Second', abbrev: 'sec', aliases: ['time', 'sec', ':'], unit_type: 'time'
+		sec = Franklin::Unit.create name: 'Second', abbrev: 'sec', unit_type: 'time'
 		ms = Franklin::Unit.create name: 'Millisecond', abbrev: 'ms', unit_type: 'time', base_unit: sec, conversion_factor: 0.001
 		min = Franklin::Unit.create name: 'Minute', abbrev: 'min', unit_type: 'time', base_unit: sec, conversion_factor: 60
 		hr = Franklin::Unit.create name: 'Hour', abbrev: 'hr', unit_type: 'time', base_unit: sec, conversion_factor: 3600
@@ -172,7 +172,7 @@ namespace :franklin do
 
 
 		
-		bs = Franklin::Metric.create title: 'Blood Sugar', default_value_type: 'current_value', aliases: ['glucose level', 'blood glucose'], default_unit: mgdl
+		bs = Franklin::Metric.create title: 'Blood Sugar', default_value_type: 'current_value', aliases: ['glucose', 'blood glucose'], default_unit: mgdl
 		
 		pbf = Franklin::Metric.create title: 'Percent Body Fat', default_value_type: 'current_value', aliases: ['pbf', 'bodyfat', 'body fat', 'body fat percent'], default_unit: per
 		pbf.targets.create target_type: :current_value, direction: :at_most, period: :all_time
@@ -198,37 +198,37 @@ namespace :franklin do
 		nutrition = Franklin::Metric.create title: 'Blocks', default_value_type: 'sum_value', 	aliases: ['block'], default_unit: block, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 15
 
-		nutrition = Franklin::Metric.create title: 'Protein', default_value_type: 'sum_value',	aliases: ['prot', 'grams protein', 'grams of protein' ], default_unit: g, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Protein', default_value_type: 'sum_value',	aliases: ['prot' ], default_unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 80
 
-		nutrition = Franklin::Metric.create title: 'Fat', default_value_type: 'sum_value', 	aliases: ['fat', 'grams fat', 'grams of fat' ], default_unit: g, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Fat', default_value_type: 'sum_value', 	default_unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 20
 
-		nutrition = Franklin::Metric.create title: 'Carb', default_value_type: 'sum_value', 		aliases: ['carb', 'carbs', 'carbohydrates', 'grams carb', 'grams of carb', 'net carbs' ], default_unit: g, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Carb', default_value_type: 'sum_value', 		aliases: [ 'carbohydrate', 'net carb' ], default_unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 40
 		
-		nutrition = Franklin::Metric.create title: 'Fiber', default_value_type: 'sum_value', 	aliases: ['fib', 'grams fiber', 'grams of fiber' ], default_unit: g, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Fiber', default_value_type: 'sum_value', 	aliases: ['fib' ], default_unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 40
 
-		nutrition = Franklin::Metric.create title: 'Sugar', default_value_type: 'sum_value', 	aliases: ['sugars', 'grams sugar', 'grams of sugar' ], default_unit: g, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Sugar', default_value_type: 'sum_value', default_unit: g, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, value: 20
 		
-		nutrition = Franklin::Metric.create title: 'Water', default_value_type: 'sum_value', 	aliases: ['of water' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Water', default_value_type: 'sum_value', default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_least, period: :day, period: :day, value: 1892.71
 
-		nutrition = Franklin::Metric.create title: 'Juice', default_value_type: 'sum_value', 	aliases: ['of juice', 'fruit juice', 'orange juice', 'apple juice' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Juice', default_value_type: 'sum_value', default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_least, period: :day, period: :week, value: 946.353
 
-		nutrition = Franklin::Metric.create title: 'Soda', default_value_type: 'sum_value', 	aliases: [ 'of soda', 'coke', 'pepsi' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Soda', default_value_type: 'sum_value', 	aliases: [ 'coke', 'pepsi' ], default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :day, period: :week, value: 946.353
 
-		nutrition = Franklin::Metric.create title: 'Alcohol', default_value_type: 'sum_value', 	aliases: [ 'liquor', 'of alcohol' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Alcohol', default_value_type: 'sum_value', 	aliases: [ 'liquor' ], default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 120
 
-		nutrition = Franklin::Metric.create title: 'Beer', default_value_type: 'sum_value', 	aliases: [ 'beers', 'of beer' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Beer', default_value_type: 'sum_value', default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 120
 
-		nutrition = Franklin::Metric.create title: 'Wine', default_value_type: 'sum_value', 	aliases: [ 'wines', 'of wine' ], default_unit: ml, default_period: 'day'
+		nutrition = Franklin::Metric.create title: 'Wine', default_value_type: 'sum_value', default_unit: ml, default_period: 'day'
 		nutrition.targets.create target_type: :sum_value, direction: :at_most, period: :week, value: 120
 
 
@@ -275,7 +275,7 @@ namespace :franklin do
 		act = Franklin::Metric.create title: 'Squats', default_value_type: 'sum_value', aliases: ['squat'], default_unit: rep, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 25
 
-		act = Franklin::Metric.create title: 'Sit-ups', default_value_type: 'sum_value', aliases: ['situp', 'sit-up', 'situps'], default_unit: rep, default_period: 'day'
+		act = Franklin::Metric.create title: 'Sit-ups', default_value_type: 'sum_value', aliases: ['situp', 'sit up', 'situps'], default_unit: rep, default_period: 'day'
 		act.targets.create target_type: :sum_value, direction: :at_least, period: :day, value: 10
 		
 		
@@ -311,7 +311,7 @@ namespace :franklin do
 		act = Franklin::Metric.create title: 'Max Clean', default_value_type: 'max_value', aliases: ['clean', 'power clean'], default_unit: kg
 		act.targets.create target_type: :max_value, direction: :at_least, period: :all_time
 		
-		act = Franklin::Metric.create title: 'Max Clean & Jerk', default_value_type: 'max_value', aliases: ['clean n jerk', 'clean and jerk', 'clean jerk'], default_unit: kg
+		act = Franklin::Metric.create title: 'Max Clean & Jerk', default_value_type: 'max_value', aliases: ['clean n jerk', 'clean and jerk', 'clean jerk', 'clean & jerk'], default_unit: kg
 		act.targets.create target_type: :max_value, direction: :at_least, period: :all_time
 		
 		act = Franklin::Metric.create title: 'Max Snatch', default_value_type: 'max_value', aliases: ['snatch'], default_unit: kg

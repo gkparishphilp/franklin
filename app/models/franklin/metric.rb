@@ -167,13 +167,13 @@ module Franklin
 
 		private
 			def set_defaults
-				self.aliases << self.title.parameterize unless self.aliases.include?( self.title.parameterize )
+				self.aliases << self.title.downcase unless self.aliases.include?( self.title.downcase )  # .parameterize unless self.aliases.include?( self.title.parameterize )
 				#self.unit ||= Unit.nada.first
 			end
 
 			def clean_aliases
 				self.aliases.each_with_index do |value, index|
-					self.aliases[index] = value.parameterize
+					self.aliases[index] = value.downcase   #.parameterize
 				end
 				self.aliases = self.aliases.sort
 			end

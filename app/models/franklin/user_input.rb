@@ -11,6 +11,16 @@ module Franklin
 					/is|=|was|were/ => 'metric_is_value' 
 				}
 
+		def metric_regex
+			metrics = Metric.where( user_id: nil ).or( Metric.where( user_id: self.user_id ) ).pluck( :aliases ).flatten.join( '|' )
+			/\s*(#{metrics})\s*/
+		end
+
+		def quantity_regex
+			units = Unit.where( user_id: nil ).or( Unit.where( user_id: self.user_id ) ).pluck( :aliases ).flatten.join( '|' )
+			/(\d+\.?\d*)\s*(#{units})*/
+		end
+
 
 		def parse!
 
