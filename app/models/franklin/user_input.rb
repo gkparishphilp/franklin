@@ -12,10 +12,6 @@ module Franklin
 				}
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> b7f20905023d3a3fc59751cab390751ab7cf58bc
 		def parse!
 
 			# for simplicity, just strip leading record or log
